@@ -1,9 +1,8 @@
 ---
 layout: page
 title: caijinlin's blog
- 
- 
 ---
+{% include JB/setup %}
  
 <p>最新文章</p>
 <ul>
