@@ -116,6 +116,20 @@ title: my  blog
 
 you can write the article with Sublime Text2.
 
+for example:
+
+---
+layout: post
+category : lessons
+tagline: "Supporting tagline"
+tags : [intro, beginner, jekyll, tutorial]
+---
+{% include JB/setup %}
+
+ the content
+
+
+
 then.
 
 $ git add .
