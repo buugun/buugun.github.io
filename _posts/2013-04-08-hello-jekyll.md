@@ -8,7 +8,7 @@ tags : [git, github, jekyll]
 ---
 {% include JB/setup %}
 
-I built a blog powered by wordpress[caijinlin's blog](http://caijinlin.tk).
+I built a blog powered by wordpress [caijinlin's blog](http://caijinlin.tk).
 
 but since knowing about the git,
 
@@ -94,17 +94,11 @@ you can find some useful themes [there](https://github.com/jekyllbootstrap)
 
 Create index.md
 
- ---
-
 layout: page
+
 title: my  blog
  
- 
----
-
-{% include JB/setup %}
- 
-<p>最新文章</p>
+ <p>最新文章</p>
 <ul>
 {% for post in site.posts %}
 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
@@ -118,14 +112,14 @@ you can write the article with Sublime Text2.
 
 for example:
 
----
+ 
 layout: post
 category : lessons
 tagline: "Supporting tagline"
 tags : [intro, beginner, jekyll, tutorial]
----
+ 
 {% include JB/setup %}
-
+ 
  the content
 
 
