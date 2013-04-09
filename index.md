@@ -1,7 +1,7 @@
 ---
 layout: page
 title: caijinlin's blog
-category: Home
+ 
 ---
  
 <p>最新文章</p>
