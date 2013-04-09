@@ -2,7 +2,7 @@
 layout: page
 title: caijinlin's blog
 ---
-<h2>{{ page.title }}</h2>
+ 
 <p>最新文章</p>
 <ul>
 {% for post in site.posts %}
