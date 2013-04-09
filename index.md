@@ -1,6 +1,7 @@
 ---
 layout: page
-title: caijinlin's blog
+title:caijinlin's blog
+ 
  
 ---
  
