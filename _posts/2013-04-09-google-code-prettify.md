@@ -19,8 +19,8 @@ tags : [google-code-prettify]
     </script>
     </pre>
 
-<!--more-->
-for examples
+ <!--more-->
+ for examples
 
 就可以使用pre标签代码高亮
     

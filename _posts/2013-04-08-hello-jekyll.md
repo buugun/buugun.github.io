@@ -22,6 +22,8 @@ continue  to make better. below is agbout the process that I built the
 
 blog site.[caijinlin's blog](https://caijinlin.github.com)
 
+ <!--more-->
+
 ### Examples
 
 This website is created with Jekyll. [Other Jekyll websites](https://github.com/mojombo/jekyll/wiki/Sites).
@@ -101,7 +103,7 @@ title: my  blog
 <p>最新文章</p>
  
 {% for post in site.posts %}
-<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>.</li>
 {% endfor %}
  
 
