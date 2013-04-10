@@ -114,7 +114,7 @@ JB :
   #
   sharing :
     provider : false
-  paginate: 5 
+ 
   # Settings for all other include helpers can be defined by creating 
   # a hash with key named for the given helper. ex:
   #
@@ -125,4 +125,12 @@ JB :
   # and include your custom code. Your custom file must be defined at:
   #   ./_includes/custom/[HELPER]
   # where [HELPER] is the name of the helper you are overriding.
+
+markdown: rdiscount
+pygments: true
+lsi: true
+exclude: ['README.markdown', 'README_FOR_COLLABORATORS.markdown', 'Gemfile.lock', 'Gemfile']
+production: false
+# add this line to add pagination
+paginate: 3 # the number of post per page
   
