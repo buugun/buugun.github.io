@@ -1,6 +1,6 @@
 ---
 layout: about
 title : 关于
-group: meta
+group: navigation
 ---
 {% include JB/setup %}
