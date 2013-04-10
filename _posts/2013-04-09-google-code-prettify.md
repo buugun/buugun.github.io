@@ -1,8 +1,8 @@
 ---
 layout: post
 category : Code
-tagline: "Supporting tagline"
-tags : [caijinlin's blog]
+tagline: "caijinlin's blog"
+tags : [code]
 ---
 {% include JB/setup %}
 
