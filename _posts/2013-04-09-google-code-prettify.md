@@ -2,7 +2,7 @@
 layout: post
 category : Code
 tagline: "Supporting tagline"
-tags : [google-code-prettify]
+tags : [caijinlin's blog]
 ---
 {% include JB/setup %}
 

@@ -2,7 +2,7 @@
 layout: page
 title: how to  build a blog site by jekyll
 category : git 
-tagline: "just learning"
+tagline: "caijinlin's blog"
 tags : [git, github, jekyll]
 
 ---
