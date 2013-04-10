@@ -10,8 +10,8 @@ tags : [google-code-prettify]
 
 首先需要两个文件，prettify.js和prettify.css，自己去官网去下。把这两个放到模板中，如下
 
-<pre>
-<link href="/assets/themes//google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+<pre class="prettyPrint">
+<link href="/assets/themes//google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="/assets/themes//google-code-prettify/prettify.js">
 $(function() {
   $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
