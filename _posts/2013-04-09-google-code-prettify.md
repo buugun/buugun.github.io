@@ -21,8 +21,9 @@ tags : [google-code-prettify]
 
 for examples
 
-就可以使用
-    <pre class="prettyPrint"></pre>标签进行高亮了，
+就可以使用pre标签代码高亮
+    
+
 
     <pre class="prettyPrint">
      // code here
