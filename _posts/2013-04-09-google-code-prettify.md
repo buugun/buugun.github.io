@@ -19,6 +19,8 @@ tags : [google-code-prettify]
     </script>
     </pre>
 
+<h2><a href="{{post.url}}">###Read more</a></h2>
+
  <!--more-->
  for examples
 

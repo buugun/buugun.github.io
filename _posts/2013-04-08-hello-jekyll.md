@@ -22,7 +22,10 @@ continue  to make better. below is agbout the process that I built the
 
 blog site.[caijinlin's blog](https://caijinlin.github.com)
 
+<h2><a href="{{post.url}}">###Read more</a></h2>
+
  <!--more-->
+
 
 ### Examples
 
