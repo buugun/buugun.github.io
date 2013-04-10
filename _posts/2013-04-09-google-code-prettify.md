@@ -19,9 +19,9 @@ tags : [google-code-prettify]
     </script>
     </pre>
 
-<h2><a href="{{post.url}}">###Read more</a></h2>
+ 
 
- <!--more-->
+<!--more-->
  for examples
 
 就可以使用pre标签代码高亮

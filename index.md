@@ -5,7 +5,7 @@ title: caijinlin's blog
 
 {% include JB/setup %}
 
- {% for post in site.posts Limit:1%}
+ {% for post in site.posts Limit:5%}
 <h2><a href="{{post.url}}">{{post.title}}</a></h2>
 {{ post.content | split:'<!--more-->' |first}}
 <br />
