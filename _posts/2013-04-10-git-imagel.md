@@ -8,13 +8,12 @@ tags : [git]
 
 some common order about git.I will present some screenshots
 
-    <img src="/images/img01.png" width:341px height:184px />
+![img01]/(images/img01.png)
 
-    <img src="/images/img02.png" width:341px height:184px />
+![img02]/(images/img02.png)
 
-    <img src="/images/img03.png" width:341px height:184px />
+![img03]/(images/img03.png)
 
-    <img src="/images/img04.png" width:341px height:184px />
+![img04]/(images/img04.png)
 
-    <img src="/images/img05.png" width:341px height:184px />
-
+![img05]/(images/img05.png) 
