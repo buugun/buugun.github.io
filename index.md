@@ -2,13 +2,17 @@
 layout: page
 title: caijinlin's blog
 ---
+
 {% include JB/setup %}
  
-<p>最新文章</p>
-<ul>
-{% for post in site.posts %}
-<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+
+ 
+{% for post in site.posts  Limit:5%}
+<h2><a href="{{post.url}}">{{post.title}}</a></h2>
+{{post.content}}
+<em Posted on {{post.date|date_to_long_string}}></em>
 {% endfor %}
-</ul>
+
+ 
 
  
