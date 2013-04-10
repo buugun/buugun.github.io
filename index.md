@@ -4,14 +4,14 @@ title: caijinlin's blog
 ---
 
 {% include JB/setup %}
- 
 
- 
- 
+ {% for post in site.posts Limit:5%}
 <h2><a href="{{post.url}}">{{post.title}}</a></h2>
-{{post.content}}
+{{ post.content | split:'<!--more-->' |first}}
 <br />
-<em> Posted on {{post.date|date_to_long_string}}.</em>
+.<em> Posted on {{post.date|date_to_long_string}}.</em>
+{% endfor %}
+
  
 
  
