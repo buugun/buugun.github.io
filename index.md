@@ -7,12 +7,12 @@ title: caijinlin's blog
  
 
  
-{% for post in site.posts  Limit:1%}
+ 
 <h2><a href="{{post.url}}">{{post.title}}</a></h2>
 {{post.content}}
 <br />
 <em> Posted on {{post.date|date_to_long_string}}.</em>
-{% endfor %}
+ 
 
  
 
