@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link href="/assets/themes//google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
     <title>{{ page.title }}</title>
     {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
     <meta name="author" content="{{ site.author.name }}">
@@ -56,6 +58,11 @@
     </div> <!-- /container -->
 
     {% include JB/analytics %}
+  <script type="text/javascript" src="/assets/themes//google-code-prettify/prettify.js">
+  $(function() {
+  window.prettyPrint && prettyPrint();
+});
 
+  </script>
   </body>
 </html>
