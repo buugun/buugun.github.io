@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: how to  build a blog site by jekyll
 category : git 
 tagline: "caijinlin's blog"
