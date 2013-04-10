@@ -10,25 +10,26 @@ tags : [google-code-prettify]
 
 首先需要两个文件，prettify.js和prettify.css，自己去官网去下。把这两个放到模板中，如下
 
-<pre class="prettyPrint">
-<link href="/assets/themes//google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all" />
-<script type="text/javascript" src="/assets/themes//google-code-prettify/prettify.js">
-$(function() {
-  $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-});
-</script>
-</pre>
+    <pre class="prettyPrint">
+    <link href="/assets/themes//google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="/assets/themes//google-code-prettify/prettify.js">
+    $(function() {
+    $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+    });
+    </script>
+    </pre>
 
 for examples
 
-就可以使用<pre class="prettyPrint"></pre>标签进行高亮了，
+就可以使用
+    <pre class="prettyPrint"></pre>标签进行高亮了，
 
-<pre class="prettyPrint">
-// code here
-</pre>
+    <pre class="prettyPrint">
+     // code here
+    </pre>
 
-<pre class="prettyPrint">
-<style type="text/css">
+    <pre class="prettyPrint">
+    <style type="text/css">
         pre {
             white-space: pre-wrap; /* css-3 */
             white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -36,5 +37,5 @@ for examples
             white-space: -o-pre-wrap; /* Opera 7 */
             word-wrap: break-word; /* Internet Explorer 5.5+ */
         }
-</style>
-</pre>
+    </style>
+    </pre>
