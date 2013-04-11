@@ -71,11 +71,14 @@ var duoshuoQuery = {short_name:"cjl"};
     </div> <!-- /container -->
 
     {% include JB/analytics %}
-  <script type="text/javascript" src="./assets/themes//google-code-prettify/prettify.js">
-  $(function() {
-  window.prettyPrint && prettyPrint();
-});
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="{\{ ASSET_PATH }\}/google-code-prettify/prettify.js"></script>
+!function ($) {
+    $(function(){
+        window.prettyPrint && prettyPrint();
+    });
+}(window.jQuery);
 
-  </script>
+  
   </body>
 </html>
