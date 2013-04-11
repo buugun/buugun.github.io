@@ -1,6 +1,7 @@
 ---
 layout: index
-title: caijinlin's blog
+title: Home
+group: navigation
 ---
  
 {% include JB/setup %}
