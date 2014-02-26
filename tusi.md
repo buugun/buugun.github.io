@@ -1,5 +1,5 @@
 ---
-layout: about
+layout: tusi
 title : beautiful pictures
 group: navigation
 ---
