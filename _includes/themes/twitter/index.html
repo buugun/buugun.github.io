@@ -11,7 +11,7 @@
 
   <div class="span4 sidebar">
     <h4 class="date">发布日期：<span>{{ latest_post.date | date_to_long_string }}</span></h4>
-
+  <section>
   {% unless latest_post.tags == empty %}
     <h4>标签</h4>
     <ul class="tag_box">
@@ -19,5 +19,15 @@
     {% include JB/tags_list %}
     </ul>
   {% endunless %}  
+   </section>
+   <section>
+    {% unless site.categories == empty %}
+    <h4>分类</h4>
+    <ul class="tag_box">
+      {% assign categories_list = site.categories %}
+      {% include JB/categories_list %}
+    </ul>
+    {% endunless %}  
+    </section>
   </div>
 </div>
