@@ -4,9 +4,37 @@
   <div class="span8">
     <h1 class="title"><a href="{{ latest_post.url }}" title="{{ latest_post.title }}">{{ latest_post.title }}</a> {% if latest_post.tagline %} <small>{{ latest_post.tagline }}</small>{% endif %}</h1>
     {{ latest_post.content }}
-    <ul class="pager">
-      <li class="next"><a href="{{ BASE_PATH }}/archive.html" title="所有文章">查看所有文章 &rarr;</a></li>
-    </ul>
+     <hr>
+    <div class="pagination">
+      <ul>
+      {% if page.previous %}
+        <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">&larr; Previous</a></li>
+      {% else %}
+        <li class="prev disabled"><a>&larr; Previous</a></li>
+      {% endif %}
+        <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">Archive</a></li>
+      {% if page.next %}
+        <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">Next &rarr;</a></li>
+      {% else %}
+        <li class="next disabled"><a>Next &rarr;</a>
+      {% endif %}
+      </ul>
+    </div>
+     {% include JB/comments %}
+    <!-- Duoshuo Comment BEGIN -->
+  <div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cjl"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- Duoshuo Comment END -->
   </div>
 
   <div class="span4 sidebar">
@@ -20,14 +48,5 @@
     </ul>
   {% endunless %}  
    </section>
-   <section>
-    {% unless site.categories == empty %}
-    <h4>分类</h4>
-    <ul class="tag_box">
-      {% assign categories_list = site.categories %}
-      {% include JB/categories_list %}
-    </ul>
-    {% endunless %}  
-    </section>
   </div>
 </div>
