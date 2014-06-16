@@ -26,40 +26,28 @@
     <!-- Duoshuo Comment BEGIN -->
    </div>
 </div>
-<div class="row span12">
-<div class="span4">
+<div class="row">
 <ul class="tag_box inline">
-    <li><h4>Published:</h4></li>
-    <li class="date">{{ page.date | date_to_long_string }}</li>>
-  </ul>
-</div>
-<div class="span8">
-<div class="span4">
- {% unless page.categories == empty %}
-    <ul class="tag_box inline">
-    <li><h4>Category:</h4></li>
-    <li>
-    <ul class="tag_box inline">
-    {% assign categories_list = page.categories %}
-    {% include JB/categories_list %}
-   </ul>
-   </li>
-</div>
-<div class="span4">
-  {% endunless %}  
-  {% unless page.tags == empty %}
-    <ul tag_box inline>
-    <li><h4>Tags:</h4></li>
-    <li>
-    <ul class="tag_box inline">
-    {% assign tags_list = page.tags %}
-    {% include JB/tags_list %}
-    </ul>
-    </li>
-    </ul>
-  {% endunless %}  
-</div>
-</div>
+      <li><i class="icon-folder-open"></i></li>
+      <li>
+      {% unless page.categories == empty %}
+      <ul class="tag_box inline">
+      {% assign categories_list = page.categories %}
+      {% include JB/categories_list %}
+      </ul>
+     {% endunless %}  
+      </li>
+</ul>
+<ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      <li> 
+     {% unless page.tags == empty %}
+     <ul class="tag_box inline">
+     {% assign tags_list = page.tags %}
+     {% include JB/tags_list %}
+     </ul>
+     {% endunless %}  
+     </li>
 </div>
 <div class="row">
   <div class="ds-thread"></div>
