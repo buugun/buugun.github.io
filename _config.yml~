@@ -3,6 +3,7 @@ permalink: /:categories/:year-:month/:title.html
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 pygments: true
+auto: true
 paginate: 5
 
 markdown: redcarpet             # markdown 语法解释引擎
@@ -28,6 +29,7 @@ author :
 
 # 域名连接
 #production_url : //caijinlin.github.io
+production_url : http://username.github.com
 
 # Jekyll Bootstrap
 JB :
