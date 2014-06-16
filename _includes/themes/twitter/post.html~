@@ -23,6 +23,19 @@
     </div>
     <hr>
     <!-- {% include JB/comments %} -->
+    <div class="row">
+    <div><b>Published:</b>
+   {{ page.date | date_to_long_string }}
+   </div>
+  {% unless page.tags == empty %}
+     Tags
+     <li><i class="icon-tags"></i></li>
+    <ul class="tag_box inline">
+    {% assign tags_list = page.tags %}
+    {% include JB/tags_list %}
+    </ul>
+  {% endunless %}  
+  </div>
     <!-- Duoshuo Comment BEGIN -->
   <div class="ds-thread"></div>
 <script type="text/javascript">
@@ -40,16 +53,5 @@ var duoshuoQuery = {short_name:"cjl"};
 
   </div>
   </div>
-  <div class="row">
-    <h4>Published</h4>
-    <div class="date"><span>{{ page.date | date_to_long_string }}</span></div>
+  
 
-  {% unless page.tags == empty %}
-    <h4>Tags</h4>
-    <ul class="tag_box">
-    {% assign tags_list = page.tags %}
-    {% include JB/tags_list %}
-    </ul>
-  {% endunless %}  
-  </div>
-</div>
