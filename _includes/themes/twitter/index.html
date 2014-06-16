@@ -1,26 +1,26 @@
 {% assign latest_post = site.posts.first %}
 
 <div class="row post">
-  <div class="span8">
+  <div class="span10">
     <h1 class="title"><a href="{{ latest_post.url }}" title="{{ latest_post.title }}">{{ latest_post.title }}</a> {% if latest_post.tagline %} <small>{{ latest_post.tagline }}</small>{% endif %}</h1>
     {{ latest_post.content }}
      <hr>
     <div class="pagination">
       <ul>
-      {% if page.previous %}
-        <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">&larr; Previous</a></li>
+      {% if latest_post.previous %}
+        <li class="prev"><a href="{{ BASE_PATH }}{{ latest_post.previous.url }}" title="{{ latest_post.previous.title }}">&larr; Previous</a></li>
       {% else %}
         <li class="prev disabled"><a>&larr; Previous</a></li>
       {% endif %}
         <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">Archive</a></li>
-      {% if page.next %}
-        <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">Next &rarr;</a></li>
+      {% if latest_post.next %}
+        <li class="next"><a href="{{ BASE_PATH }}{{ latest_post.next.url }}" title="{{ latest_post.next.title }}">Next &rarr;</a></li>
       {% else %}
         <li class="next disabled"><a>Next &rarr;</a>
       {% endif %}
       </ul>
     </div>
-     {% include JB/comments %}
+   <!--  {% include JB/comments %} -->
     <!-- Duoshuo Comment BEGIN -->
   <div class="ds-thread"></div>
 <script type="text/javascript">
