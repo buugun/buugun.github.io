@@ -3,6 +3,7 @@ permalink: /:categories/:year-:month/:title.html
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 pygments: true
+auto: true
 paginate: 5
 
 markdown: redcarpet             # markdown 语法解释引擎
