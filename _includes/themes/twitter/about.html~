@@ -23,9 +23,9 @@
     <h2>关于博客</h2>
     <ul>
         <li><strong>域名：</strong> <a title="蔡金林的博客" href="www.caijinlin.com"> www.caijinlin.com </a>51RMB/year
-        </li>
+        <li>
         <li><strong>程序：</strong> 由jekyllbootstrap驱动，由gitunb托管，由git管理
-        </li>
+        <li>
     </ul>
 </div>
   <div class="span6">
