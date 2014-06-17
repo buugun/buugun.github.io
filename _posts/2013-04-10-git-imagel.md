@@ -11,7 +11,7 @@ tags : [git]
  <script type="text/javascript" src="/assets/themes/twitter/fancybox/lib/jquery-1.10.1.min.js"></script>
  <!-- Add mousewheel plugin (this is optional) -->
  <script type="text/javascript" src="/assets/themes/twitter/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
- <script type="text/javascript" src="/assets/themes/twitter/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+ <script type="text/javascript" src="/assets/themes/twitter/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
 	<script type="text/javascript">
 		$(document).ready(function() 
 		{	
