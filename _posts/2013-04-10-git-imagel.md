@@ -8,15 +8,15 @@ tags : [git]
  
    some common order about git.I will present some screenshots
 
-[![](/images/img01.png)](/images/img01.png "some common order about git")
+![](/images/img01.png)
 
-[![](/images/img02.png)](/images/img02.png "some common order about git")
+![](/images/img02.png)
 
-[![](/images/img03.png)](/images/img03.png "some common order about git")
+![](/images/img03.png)
 
-[![](/images/img04.png)](/images/img04.png "some common order about git")
+![](/images/img04.png)
 
-[![](/images/img05.png)](/images/img05.png "some common order about git")
+![](/images/img05.png)
 
  
 
