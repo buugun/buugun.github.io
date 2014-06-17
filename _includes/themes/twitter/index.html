@@ -7,6 +7,8 @@
   <div class="content">
    {{ post.content }}
   </div>
+</div>
+{% endfor %}
 <!-- Pagination links -->
 <div class="pull-right">
   {% if paginator.previous_page %}
@@ -29,5 +31,4 @@
   <span><a class="btn btn-primary btn-sm disabled">Next &raquo;</a></span>
   <span><a class="btn btn-primary btn-sm disabled">Last</a></span>
   {% endif %}
-</div>
 </div>
