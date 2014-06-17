@@ -27,29 +27,6 @@
    </div>
 </div>
 <div class="row">
-<ul class="tag_box inline">
-      <li>Category:</li>
-      <li>
-      {% unless page.categories == empty %}
-      <ul class="tag_box inline">
-      {% assign categories_list = page.categories %}
-      {% include JB/categories_list %}
-      </ul>
-     {% endunless %}  
-      </li>
-</ul>
-<ul class="tag_box inline">
-      <li>Tags:</li>
-      <li> 
-     {% unless page.tags == empty %}
-     <ul class="tag_box inline">
-     {% assign tags_list = page.tags %}
-     {% include JB/tags_list %}
-     </ul>
-     {% endunless %}  
-     </li>
-</div>
-<div class="row">
   <div class="ds-thread"></div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"cjl"};
