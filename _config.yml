@@ -16,14 +16,14 @@ tagline: Site Tagline
 keywords : linux, gentoo, internet, sql, jekyll, BSD, MAC, havee
 description: Havee Hobbies, Linux Tips Record。
 author :
-  name : Havee
-  email :
-  github : Ihavee
-  gitcafe : Havee
+  name : cai
+  email : 1399534656@qq.com
+  github : caijinliin
+  gitcafe : 
   twitter :
   facebook :
   feedburner :
-  weibo : Havanna
+  weibo : sclgcaijinlin
 
 # 域名连接
 #production_url : //ihavee.github.io
