@@ -11,14 +11,14 @@ redcarpet:
 # 参考 http://github.com/vmg/redcarpet/blob/master/README.markdown
 
 # 核心设置
-title : demo
+title : Caijinlin's blog
 tagline: Site Tagline
-keywords : linux, gentoo, internet, sql, jekyll, BSD, MAC, havee
-description: Havee Hobbies, Linux Tips Record。
+keywords : caijinliin, linux, php, Mysql, c++,git
+description: 蔡金林的技术博客
 author :
-  name : cai
+  name : caijinlin
   email : 1399534656@qq.com
-  github : caijinliin
+  github : caijinlin
   gitcafe : 
   twitter :
   facebook :
@@ -44,7 +44,7 @@ JB :
 
   # 评论，provider 留空或 false 关闭评论
   comments :
-    provider :                      # 采用那种评论，可填 duoshuo 或 disqus 或其他 ...
+    provider : duoshuo                     # 采用那种评论，可填 duoshuo 或 disqus 或其他 ...
     disqus :
       short_name :
     livefyre :
@@ -57,7 +57,7 @@ JB :
       width: 580
       colorscheme: light
     duoshuo :
-      name : shortname              # 多说上获取的 shortname
+      name : cjl              # 多说上获取的 shortname
       rcomments :                   # 首页侧边栏最新评论
         num: 10                     # 最新评论显示条数
         avatar : 0                  # 最新评论是否显示头像
@@ -86,7 +86,7 @@ JB :
 
   # 一键分享
   sharing :
-    provider :                      # 参考 _includes/JB/sharing
+    provider :  baidu                     # 参考 _includes/JB/sharing
 
   # CDN 加速资源
   cdn :
@@ -107,5 +107,5 @@ JB :
   # 友情链接
   blogroll : false                   # true 开启，留空或 false 关闭
   brlist :
-    - text : Havee's Space
-      url : //havee.cme/
+    - text : Caijinlin's Space
+      url : wwww.caijinlin.com
