@@ -20,10 +20,10 @@ tags: [高精度]
 北电上一道关于高精度算法的算法题，题目链接[http://poj.org/problem?id=1001](http://poj.org/problem?id=1001)，用了一下午的时间开始搜集各方面code，发现大多数杂而乱，在绞尽脑汁后，自己动手写了个，终于一次性AC。
 源代码实现c++版：/*注释的代码是为了记录某些值，进行排错*/
 	
-	#include &lt;iostream&gt;
-	#include &lt;string&gt;
-	#include&lt;algorithm&gt;
-	#include&lt;stdio.h&gt;
+	#include <iostream>
+	#include <string>
+	#include <algorithm>
+	#include <stdio.h>;
 	using namespace std;
 	string add(string a, string b)//参与运算的两个数字串
 	{
@@ -34,11 +34,11 @@ tags: [高精度]
     up=0;//进位
     while(i&gt;=0||j&gt;=0)
     {
-            if(i&lt;0) x='0'; else x=a[i];
-            if(j&lt;0) y='0'; else y=b[j];
+            if(i<0) x='0'; else x=a[i];
+            if(j<0) y='0'; else y=b[j];
             z=x-'0'+y-'0';
             if(up) z+=1;//上一位加法产生的进位
-            if(z&gt;9)
+            if(z>9)
             {
                 up=1;
                 z%=10;
@@ -63,11 +63,11 @@ tags: [高精度]
 	{
     int i, j,k;
     string result = "0";
-    for(i = a.length() - 1; i &gt;= 0; i--)
+    for(i = a.length() - 1; i >= 0; i--)
     {
         int remain = 0;
         string str = "";
-        for(j = b.length() - 1; j &gt;= 0; j--)
+        for(j = b.length() - 1; j >= 0; j--)
         {
             int tmp = (a[i] - '0') * (b[j] - '0') + remain;
             remain = tmp / 10;
@@ -108,13 +108,13 @@ tags: [高精度]
             i++;
         }
         /*
-        for(i=0;i&lt;s1.size();i++)
+        for(i=0;i<s1.size();i++)
         {
-            cout&lt;&lt;s1[i];
+            cout<<s1[i];
         }
-        cout&lt;&lt;endl;
+        cout<<endl;
         */
-        for(i=1;i&lt;=n;i++)//循环作乘法
+        for(i=1;i<=n;i++)//循环作乘法
         {
             res=multiple(s1,res);
         }
@@ -124,20 +124,20 @@ tags: [高精度]
               j=j*n;//输出时将要移动的小数点位数
         }
         /*
-        cout&lt;&lt;"j:"&lt;&lt;j&lt;&lt;endl;
-        cout&lt;&lt;"res:";
-        for(i=0;i&lt;res.size();i++)
+        cout<<"j:"<<j<<endl;
+        cout<<"res:";
+        for(i=0;i<res.size();i++)
         {
-             cout&lt;&lt;res[i];
+             cout<<res[i];
         }
-        cout&lt;&lt;endl;
+        cout<<endl;
         */
        string::iterator it=res.begin();
        if(pos!=0)
        {
             res.insert(it+res.size()-j,'.');
             it=res.begin();
-            if(res[0]=='0'&amp;&amp;res[1]=='.') //删除0.0001中的小树点前面的0
+            if(res[0]=='0'&& res[1]=='.') //删除0.0001中的小树点前面的0
             {
                 res.erase(it);
             }
@@ -152,11 +152,11 @@ tags: [高精度]
                 res.erase(it);
             }
        }
-        for(i=0;i&lt;res.size();i++)//直接输出
+        for(i=0;i<res.size();i++)//直接输出
         {
             printf("%c",res[i]);
         }
-        cout&lt;&lt;endl;
+        cout<<endl;
         s1.clear();
         res="1";
     }
