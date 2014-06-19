@@ -60,10 +60,10 @@ JB :
       name : cjl              # 多说上获取的 shortname
       rcomments :                   # 首页侧边栏最新评论
         num: 10                     # 最新评论显示条数
-        avatar : 1                  # 最新评论是否显示头像
-        time: 1
+        avatar :                   # 最新评论是否显示头像
+        time: 
         title : 1
-        admin : 1
+        admin : 
         length : 12                 # 最新评论显示的长度
       rvisitors :                   # 首页侧边栏最新访客
         num : 12                    # 最新访客数目
