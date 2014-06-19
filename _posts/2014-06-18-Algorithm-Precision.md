@@ -32,7 +32,7 @@ tags: [高精度]
     i=a.length()-1;
     j=b.length()-1;
     up=0;//进位
-    while(i&gt;=0||j&gt;=0)
+    while(i>=0||j>=0)
     {
             if(i<0) x='0'; else x=a[i];
             if(j<0) y='0'; else y=b[j];
