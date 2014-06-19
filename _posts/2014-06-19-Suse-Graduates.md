@@ -4,7 +4,7 @@ title: "我们眼中的计算机学院毕业生——男会修电脑，女会上
 description: "计算机学院毕业生"
 keywords: "计算机学院毕业生"
 category: 随笔
-tags: [计算机,毕业]
+tags: [计算机]
 ---
 {% include JB/setup %}
 
@@ -26,3 +26,5 @@ tags: [计算机,毕业]
 小k想说，他们并不是这样，他们可以更接地气，他们甚至希望这个世界，因为他们的存在，开始有了一点点的不一样。
 
 分享四川理工计算机学院2014届毕业生采访视频《再见，同桌的你》
+
+<embed src="http://player.youku.com/player.php/sid/XNzI1Njg5MTc2/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
