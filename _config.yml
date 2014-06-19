@@ -61,9 +61,9 @@ JB :
       rcomments :                   # 首页侧边栏最新评论
         num: 10                     # 最新评论显示条数
         avatar :                   # 最新评论是否显示头像
-        time: 
+        time: 1
         title : 1
-        admin : 
+        admin : 1
         length : 12                 # 最新评论显示的长度
       rvisitors :                   # 首页侧边栏最新访客
         num : 12                    # 最新访客数目
