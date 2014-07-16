@@ -48,6 +48,7 @@ gdb基本命令列表：
 ![蔡金林的博客之反转字符串并去掉多余空格类](/assets/images/Reverseclass.png)
 
 主函数main:
+
 	#include<iostream>
 	#include<algorithm>
 	#include<string>
@@ -62,30 +63,44 @@ gdb基本命令列表：
 	}
 
 2.gcc编译,生成可执行文件,注意必须使用-g参数，编译会加入调试信息否则无法执行文件
+
 	g++ -g -o demo demo.cpp
 
 3.gdb调试
+
 ![蔡金林的博客](/assets/images/gdbstart.png)
 
 3.1查看源文件 list 1,回车，直到显示完整程序
+
 ![蔡金林的博客](/assets/images/gdblist.png)
 
 3.2设置断点 break 8,在第8行设置断点，info break查看断点信息
+
 ![蔡金林的博客](/assets/images/gdbbreak.png)
 
 3.3调试运行 输入run 或者r 
+
 进行程序的输入
-	   the sky is   blue  
+
+	   the sky is   blue 
+
 ![蔡金林的博客](/assets/images/gdbrun.png)
 
-3.4单步调试，step 或者 s进入函数内部
+3.4单步调试，输入step 或者 s进入函数内部
+
 ![蔡金林的博客](/assets/images/gdbstep.png)
 
-3.5查看变量 print b 或者 p b
+3.5查看变量 输入print 变量 或者 p 变量
+
 ![蔡金林的博客](/assets/images/gdbprint.png)
 
-3.6继续运行直到下一个断点或主函数结束 continue或者 c
+3.6继续运行直到下一个断点或主函数结束 输入continue或者 c
+
 程序结果
+
 	blue is sky the
+
+![蔡金林的博客](/assets/images/gdbcontinue.png)
+
 
 3.7 退出调试 输入q
