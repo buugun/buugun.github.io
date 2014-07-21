@@ -8,20 +8,16 @@ tags: [php,shell,多线程]
 ---
 {% include JB/setup %}
 
-### linux下php+shell实现多线程
-
-####借助shell实现php多线程
+###linux下借助shell实现php多线程
 
 在一个程序中，这些独立运行的程序片段叫作多线程，利用它编程的概念叫做“多线程处理”。具有多线程能力的计算机因有硬件支持而能够在同一时间执行多个线程，进而提升处理性能。php本身不支持多线程，但apache和linux支持多线程。本文主要讲在linux环境下，借助shell脚本实现php多线程。
 
 <!-- more -->
 
-####写个简单的demo
+写个简单的demo,源文件test.php
 
-源文件test.php
-
-   <?php
-   for($i = 0;$i < 10;$i++)
+    <?php
+    for($i = 0;$i < 10;$i++)
     {
        echo $i;
        sleep(5);//相当于定时器
