@@ -4,7 +4,7 @@ title: "贪心算法"
 description: "贪心"
 keywords: "贪心算法"
 category: 算法
-tags: [贪心算法]
+tags: [贪心]
 ---
 {% include JB/setup %}
 
