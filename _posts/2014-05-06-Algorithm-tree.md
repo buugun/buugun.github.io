@@ -4,7 +4,7 @@ title: "最小生成树"
 descript: "生成树"
 keywords: "图论"
 category: 算法
-tages: [最小生成树]
+tages: [Prim,kruskal]
 ---
 {% include JB/setup %}
 
@@ -19,7 +19,7 @@ tages: [最小生成树]
     深度优先生成树
     广度优先生成树
 
-![生成树的遍历方式](/assets/image/tree.png)
+![生成树的遍历方式](/assets/images/tree.png)
 
 ####生成树的特点
     
@@ -34,6 +34,7 @@ tages: [最小生成树]
 #####prim算法基本思想
 
 取图中任意一个顶点 v 作为生成树的根，之后往生成树上添加新的顶点 w。在添加的顶点 w 和已经在生成树上的顶点v 之间必定存在一条边，并且该边的权值在所有连通顶点 v 和 w 之间的边中取值最小。之后继续往生成树上添加顶点，直至生成树上含有 n-1 个顶点为止。
+
 一般情况下所添加的顶点应满足下列条件:
 
     在生成树的构造过程中，图中 n 个顶点分属两个集合
@@ -41,7 +42,7 @@ tages: [最小生成树]
 
 #####prim方法实现过程原理图
 
-![prim算法原理图](/assets/image/prim.png)
+![prim算法原理图](/assets/images/prim.png)
 
 #####prim算法描述
 
@@ -69,7 +70,7 @@ tages: [最小生成树]
 
 #####kruskal算法实现过程原理图
 
-![kruskal算法原理图](/assets/image/kruskal.png)
+![kruskal算法原理图](/assets/images/kruskal.png)
 
 ####prim和Kruskal算法具体实现c++版(官方)
 
