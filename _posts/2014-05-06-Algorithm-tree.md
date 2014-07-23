@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title: "最小生成树"
 descript: "生成树"
