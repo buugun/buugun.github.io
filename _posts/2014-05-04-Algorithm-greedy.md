@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title: "贪心算法"
 description: "贪心"
