@@ -1,10 +1,10 @@
 ﻿---
 layout: post
 title: "贪心算法"
-descript: "贪心算法"
-keywords: "贪心算法"
+description: "贪心算法"
+keywords: "贪心"
 category: 算法
-tages: [贪心算法]
+tags: [贪心算法]
 ---
 {% include JB/setup %}
 
@@ -63,7 +63,7 @@ N=K=0表示输入结束。
   	5 2
   	5 3 1 4 7
   	5 3
-    
+
 ####算法实现code
 
     #include<stdio.h>
