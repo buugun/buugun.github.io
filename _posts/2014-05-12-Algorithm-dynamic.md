@@ -67,35 +67,33 @@ tags: [动态规划]
 
 ####案例分析:Common Subsequence(最长公共子序列问题)
 
-![动态规划公式](/assets/images/Dp.png)
-
 ![动态规划路径](/assets/images/path.png)
 
 ####算法实现code
 
-  #include<iostream>
-  #include<string>
-  #include<stdio.h>
-  #define Max 100
-  using namespace std;
-  int size(char *s)
-  {
-     int len=0;
-     while(*s!='\0')
-     {
+    #include<iostream>
+    #include<string>
+    #include<stdio.h>
+    #define Max 100
+    using namespace std;
+    int size(char *s)
+    {
+      int len=0;
+      while(*s!='\0')
+      {
          len++;
          s=s+1;
-     }
-     return len;
-  }
-  int main(int argc, char* argv[])
-  {
-     int i,j;
-     int len1,len2;
-     int matricx[Max][Max];
-     char s1[80],s2[80];
-     while(scanf("%s %s",s1,s2) != EOF)
-     {
+      }
+      return len;
+    }
+    int main(int argc, char* argv[])
+    {
+      int i,j;
+      int len1,len2;
+      int matricx[Max][Max];
+      char s1[80],s2[80];
+      while(scanf("%s %s",s1,s2) != EOF)
+      {
         len1=size(s1);
         len2=size(s2);
         for(i=0;i<=len2;i++)
@@ -121,5 +119,5 @@ tags: [动态规划]
           }
         }
         cout<<matricx[len1][len2]<<endl;
-     }
-  }
+      }
+    }
