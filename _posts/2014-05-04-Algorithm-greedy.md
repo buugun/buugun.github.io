@@ -1,8 +1,8 @@
 ﻿---
 layout: post
 title: "贪心算法"
-description: "贪心算法"
-keywords: "贪心"
+description: "贪心"
+keywords: "贪心算法"
 category: 算法
 tags: [贪心算法]
 ---
