@@ -11,19 +11,19 @@ redcarpet:
 # 参考 http://github.com/vmg/redcarpet/blob/master/README.markdown
 
 # 核心设置
-title : Caijinlin's blog
+title : GustFu's blog
 tagline: Site Tagline
-keywords : caijinliin, linux, php, Mysql, c++,git
-description: 蔡金林的技术博客
+keywords : gustfu, algorithm, c++
+description: a blog to share and note my idea
 author :
-  name : caijinlin
-  email : 1399534656@qq.com
-  github : caijinlin
+  name : GustFu
+  email : fu0110@live.com
+  github : gustfu
   gitcafe : 
   twitter :
   facebook :
   feedburner :
-  weibo : sclgcaijinlin
+  weibo : 
 
 # 域名连接
 #production_url : //ihavee.github.io
@@ -44,7 +44,7 @@ JB :
 
   # 评论，provider 留空或 false 关闭评论
   comments :
-    provider : duoshuo                     # 采用那种评论，可填 duoshuo 或 disqus 或其他 ...
+    provider : duoshuo                     # 采用评论，可填 duoshuo 或 disqus 或其他 ...
     disqus :
       short_name :
     livefyre :
@@ -57,7 +57,7 @@ JB :
       width: 580
       colorscheme: light
     duoshuo :
-      name : cjl              # 多说上获取的 shortname
+      name : gustfu              # 多说上获取的 shortname
       rcomments :                   # 首页侧边栏最新评论
         num: 10                     # 最新评论显示条数
         avatar : 1                   # 最新评论是否显示头像
@@ -107,5 +107,5 @@ JB :
   # 友情链接
   blogroll : false                   # true 开启，留空或 false 关闭
   brlist :
-    - text : Caijinlin's Space
-      url : wwww.caijinlin.com
+    - text : 
+      url : 
