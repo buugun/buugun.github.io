@@ -111,5 +111,7 @@ JB :
       url : http://caijinlin.github.io/
     - text : POJ
       url : http://poj.org/
-    - text : LeetCode OJ
+    - text : Leetcode OJ
       url : https://oj.leetcode.com/
+    - text : Leetcode
+      url : http://leetcode.com/
