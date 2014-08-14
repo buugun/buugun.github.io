@@ -109,3 +109,7 @@ JB :
   brlist :
     - text : Caijinlin's blog
       url : caijinlin.github.io
+    - text : POJ
+      url : poj.org
+    - text : LeetCode OJ
+      url : https://oj.leetcode.com/
