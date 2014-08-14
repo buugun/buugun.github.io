@@ -11,6 +11,8 @@ Foreword
 People say that the programmers who haven't a blog isn't a good programmer.
 So, as you see, I built and wrote a blog.
 
+<!-- more -->
+
 I have to say, I'm not a good programmer, but I have a heart to becoming a best programmer!
 As the saying goes, "The soldier who doesn't want to be a general isn't a good one."
 Since that I must strengthen myself.
