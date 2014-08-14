@@ -2,7 +2,9 @@
 layout: post
 title: "Foreword"
 description: "Write in the front"
+keywords: "gustfu's blog"
 category: foreword
+tags: [foreword]
 ---
 {% include JB/setup %}
 
