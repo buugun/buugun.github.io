@@ -105,7 +105,7 @@ JB :
       css : //cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css
 
   # 友情链接
-  blogroll : false                   # true 开启，留空或 false 关闭
+  blogroll : true                   # true 开启，留空或 false 关闭
   brlist :
-    - text : 
-      url : 
+    - text : Caijinlin's blog
+      url : caijinlin.github.io
