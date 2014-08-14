@@ -71,7 +71,7 @@ JB :
 
   # 网站统计
   analytics :
-    provider :                      # 采用那种统计，可填 baidu 或 google 或其他 ...
+    provider :                      # 采用统计，可填 baidu 或 google 或其他 ...
     google :
         tracking_id : 'UA-123-12'
     getclicky :
