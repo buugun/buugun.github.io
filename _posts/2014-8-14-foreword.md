@@ -31,6 +31,10 @@ And when you see somewhere in my article are wrong or not so exact, please point
 I'll be very grateful to you.
 
 And then, I want to share my archive on this blog.
+I'll write one article whenever I have idea or make breakthroughs.
+Though it maybe not so good, I can consolidate the knowledge I have learnt and you may be inspired by my article.
+At the same time, I hope every littl companions can help me to perfect my knowledge and article.
+Thanks a lot.
 
 Coder isn't a coder.
 
