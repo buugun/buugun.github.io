@@ -108,8 +108,8 @@ JB :
   blogroll : true                   # true 开启，留空或 false 关闭
   brlist :
     - text : Caijinlin's blog
-      url : caijinlin.github.io
+      url : /caijinlin.github.io
     - text : POJ
-      url : poj.org
+      url : /poj.org
     - text : LeetCode OJ
-      url : oj.leetcode.com/
+      url : /http://oj.leetcode.com/
