@@ -119,7 +119,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 ![result_of_separation](/assets/images/poj1001/result_of_separation.png)
 
-	##乘加结合的乘法运算
+##乘加结合的乘法运算
 	思路图：
 
 ![method of combination](/assets/images/poj1001/method_of_combination.png)
