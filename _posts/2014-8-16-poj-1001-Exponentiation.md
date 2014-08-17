@@ -113,7 +113,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	代码：
 
-	<script src="https://gist.github.com/gustfu/cd606b2414dbf1e6d295.js"></script>
+<script src="https://gist.github.com/gustfu/cd606b2414dbf1e6d295.js"></script>
 
 	结果：
 
@@ -125,7 +125,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 	![method of combination](/assets/images/poj1001/method_of_combination.png)
 
 	代码:
-	<script src="https://gist.github.com/gustfu/41ed9e2c420580e3c95a.js"></script>
+<script src="https://gist.github.com/gustfu/41ed9e2c420580e3c95a.js"></script>
 
 	结果：
 
@@ -133,7 +133,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	##完整代码
 
-	<script src="https://gist.github.com/gustfu/fe10b9e67700216f30a7.js"></script>
+<script src="https://gist.github.com/gustfu/fe10b9e67700216f30a7.js"></script>
 
 
 ##最后的思考与总结
