@@ -9,32 +9,32 @@ tags: [googol multiplication, 大数乘法, poj 1001, exponentiation, c++, algor
 
 {% include JB/setup %}
 
-####Solution of POJ 1001 Exponentiation
+#Solution of POJ 1001 Exponentiation
 
 Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
-##Problem:
+####Problem:
 
 											1001  Exponentiation
 								Time Limit: 500MS		Memory Limit: 10000K
 
 <!-- more -->
 								
-##Description
+####Description
 
 	Problems involving the computation of exact values of very large magnitude and precision are common. For example, the computation of the national debt is a taxing experience for many computer systems. 
 
 	This problem requires that you write a program to compute the exact value of Rn where R is a real number ( 0.0 < R < 99.999 ) and n is an integer such that 0 < n <= 25.
 
-##Input
+####Input
 
 	The input will consist of a set of pairs of values for R and n. The R value will occupy columns 1 through 6, and the n value will be in columns 8 and 9.
 
-##Output
+####Output
 
 	The output will consist of one line for each line of input giving the exact value of R^n. Leading zeros should be suppressed in the output. Insignificant trailing zeros must not be printed. Don't print the decimal point if the result is an integer.
 
-##Sample Input
+####Sample Input
 
 	95.123 12
 	0.4321 20
@@ -43,7 +43,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 	98.999 10
 	1.0100 12
 
-##Sample Output
+####Sample Output
 
 	548815620517731830194541.899025343415715973535967221869852721
 	.00000005148554641076956121994511276767154838481760200726351203835429763013462401
@@ -53,7 +53,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 	1.126825030131969720661201
 
 
-####我的思路
+##我的思路
 
 	一拿到这个问题，我抱着侥幸的心理试了试直接使用double类型来计算，不过结果也就不用说，当然是无法达到目的。
 	既然如此，就必须使用__大数(googol)__。
@@ -106,7 +106,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	后者：将乘法与加法结合，__优点__是只用遍历乘法，在作乘的过程中夹杂加法，将二者结合，当然所谓夹杂不是简单的将加法函数里边的代码拷贝到乘法中，具体情况见稍后贴出的代码；__缺点__就很显然的是，比较难想，不益于书写，写时思路很容易乱，当然这个缺点对一些道友来说也是优点，因为利于学习。
 
-####乘加分离的乘法运算
+##乘加分离的乘法运算
 思路图：
 
 ![method of separation](/assets/images/poj1001/method_of_separation.png)
@@ -190,7 +190,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 ![result_of_separation](/assets/images/poj1001/result_of_separation.png)
 
-####乘加分离的乘法运算
+##乘加结合的乘法运算
 思路图：
 
 ![method of combination](/assets/images/poj1001/method_of_combination.png)
@@ -253,7 +253,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 ![result_of_separation](/assets/images/poj1001/result_of_combination.png)
 
-####完整代码
+##完整代码
 	#include <iostream>
 	#include <vector>
 	#include <string>
@@ -531,7 +531,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 		return output;
 	}
 
-####最后的思考与总结
+##最后的思考与总结
 
 这道题目其实弄起来也不难，但涉及到诸多细节上面的东西，需要我们仔细一些。
 
