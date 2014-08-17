@@ -9,8 +9,6 @@ tags: [googol multiplication, 大数乘法, poj 1001, exponentiation, c++, algor
 
 {% include JB/setup %}
 
-#Solution of POJ 1001 Exponentiation
-
 Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 ####Problem:
