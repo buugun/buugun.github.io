@@ -2,7 +2,7 @@
 layout: post
 title: "solution of poj 1001 Exponentiation"
 description: "Here is the solution of poj 1001 Exponentiation. It describes my train of thought of solving the problem of multiplication of googol."
-keywords: "googol multiplication, 大数乘法, poj 1001, exponentiation"
+keywords: "googol multiplication、 大数乘法、 poj 1001、 exponentiation"
 category: Algorithm
 tags: [googol multiplication, 大数乘法, poj 1001, exponentiation, c++, algorithm]
 ---
@@ -125,13 +125,14 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 ![method of combination](/assets/images/poj1001/method_of_combination.png)
 
 	代码:
+
 <script src="https://gist.github.com/gustfu/41ed9e2c420580e3c95a.js"></script>
 
 	结果：
 
-	![result_of_separation](/assets/images/poj1001/result_of_combination.png)
+![result_of_separation](/assets/images/poj1001/result_of_combination.png)
 
-	##完整代码
+##完整代码
 
 <script src="https://gist.github.com/gustfu/fe10b9e67700216f30a7.js"></script>
 
