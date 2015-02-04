@@ -113,11 +113,78 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	代码：
 
-<script src="https://gist.github.com/gustfu/cd606b2414dbf1e6d295.js"></script>
+	// adding
+	BigFloat BigFloat::operator+=(vector<short> &other)
+	{
+		short carry = 0; // 进位数
+		vector<short> &result = this->value;
+		vector<short>::reverse_iterator rit_result,
+			rit_other;
 
-	结果：
+		for (rit_result = result.rbegin(), rit_other = other.rbegin();
+			rit_other != other.rend();
+			++rit_result, ++rit_other)
+		{
+			// 当 result 中没有空间时，扩展空间
+			if (rit_result == result.rend())
+			{
+				result.insert(result.begin(), 0);
+				rit_result = --result.rend();
+			}
+			carry = *rit_result + *rit_other + carry / 10;
+			*rit_result = carry % 10;
+		}
+		//结束循环后 other 中所有数都参与了计算
+		while (carry / 10)
+		{
+			if (rit_result == result.rend())
+			{
+				result.insert(result.begin(), 0);
+				rit_result = --result.rend();
+			}
 
-![result_of_separation](/assets/images/poj1001/result_of_separation.png)
+			// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
+			carry = *rit_result + carry / 10;
+			*rit_result = carry % 10;
+		}
+
+		return *this;
+	} // end of adding
+
+	// multiplication
+	BigFloat BigFloat::operator*(BigFloat &other)
+	{
+		int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
+		BigFloat result; // 保存结果
+
+		for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
+			rit_this != this->value.rend();
+			++rit_this,
+			++num_0) // 乘数每乘完一位后增加0的个数
+		{
+			vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
+			unsigned carry = 0; // 进位数
+
+			for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
+				rit_other != other.value.rend();
+				++rit_other)
+			{
+				carry = *rit_this * *rit_other + carry / 10; // 计
+				addend.insert(addend.begin(), carry % 10);   // 算
+			}
+			// 处理留下的 carry
+			if (carry / 10)
+			{
+				addend.insert(addend.begin(), carry / 10);
+			}
+
+			result += addend; // 将计算所得的加数与结果相加
+		}
+
+		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+
+		return result;
+	} // end of multiplication
 
 ##乘加结合的乘法运算
 	思路图：
@@ -126,291 +193,338 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	代码:
 
-<script src="https://gist.github.com/gustfu/41ed9e2c420580e3c95a.js"></script>
+	BigFloat BigFloat::operator * (BigFloat &other)
+	{
+		BigFloat result;
+		int i, j;
+		short carrySum, // 和的进位数
+			carryPro; // 积的进位数
 
-	结果：
+		vector<short>::reverse_iterator ritSelf,
+										ritOther,
+										ritResult;
 
-![result_of_separation](/assets/images/poj1001/result_of_combination.png)
+		for (ritSelf = this->value.rbegin(), j = 0;
+			ritSelf != this->value.rend();
+			++ritSelf, j++)
+		{
+			carrySum = carryPro = 0;
+			for (ritOther = other.value.rbegin(), i = j;
+				ritOther != other.value.rend();
+				++ritOther, i++)
+			{
+				ritResult = result.value.rbegin() + i;
+				if (ritResult == result.value.rend())
+				{
+					result.value.insert(result.value.begin(), 0);
+					ritResult = result.value.rend() - 1;
+				}
+				carryPro = *ritSelf * *ritOther + carryPro / 10;
+				carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+				*ritResult = carrySum % 10;
+			}
+			if (carrySum / 10 || carryPro / 10)
+			{
+				do 
+				{
+					ritResult = result.value.rbegin() + i;
+					if (ritResult == result.value.rend())
+					{
+						result.value.insert(result.value.begin(), 0);
+						ritResult = result.value.rend() - 1;
+					}
+					carrySum = *ritResult + carrySum / 10 + carryPro / 10;
+					*ritResult = carrySum % 10;
+					carryPro = 0;
+					i++;
+				} while (carrySum / 10);
+			}
+		}
+
+		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
+
+		return result;
+	}
 
 ##完整代码
 
-[i][color=#008800]001 [/color][/i][color=#008080]#include <iostream>[/color]
-[i][color=#008800]002 [/color][/i][color=#008080]#include <vector>[/color]
-[i][color=#008800]003 [/color][/i][color=#008080]#include <string>[/color]
-[i][color=#008800]004 [/color][/i][color=#008080]#include <algorithm>[/color]
-[color=#f810b0]005 [/color][b][color=#000080]using[/color][/b] [b][color=#000080]namespace[/color][/b] [color=#000000]std[/color];
-[i][color=#008800]006 [/color][/i]
-[i][color=#008800]007 [/color][/i][color=#008080]#define SEPARATION 1[/color]
-[i][color=#008800]008 [/color][/i]
-[i][color=#008800]009 [/color][/i][b][color=#000080]class[/color][/b] [color=#000000]BigFloat[/color]
-[color=#f810b0]010 [/color][color=#000000]{[/color]
-[i][color=#008800]011 [/color][/i][b][color=#000080]private[/color][/b][color=#000000]:[/color]
-[i][color=#008800]012 [/color][/i]    [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>[/color] [color=#000000]value[/color]; [i][color=#008800]//数字部分[/color][/i]
-[i][color=#008800]013 [/color][/i]    [b][color=#000080]unsigned[/color][/b] [b][color=#000080]int[/color][/b] [color=#000000]pos_decimalPoint[/color]; [i][color=#008800]//小数点位置[/color][/i]
-[i][color=#008800]014 [/color][/i]
-[color=#f810b0]015 [/color][b][color=#000080]public[/color][/b][color=#000000]:[/color]
-[i][color=#008800]016 [/color][/i]    [color=#000000]BigFloat[/color]() [color=#000000]:[/color] [color=#000000]pos_decimalPoint[/color]([color=#0000ff]0[/color]) [color=#000000]{};[/color]
-[i][color=#008800]017 [/color][/i]    [b][color=#000080]inline[/color][/b] [color=#000000]BigFloat[/color]([color=#000000]string[/color] [color=#000000]r[/color]); [i][color=#008800]// 初始化 result, 小数点位置为 输入的 R 所在的下标， 无小数点则为 0[/color][/i]
-[i][color=#008800]018 [/color][/i]
-[i][color=#008800]019 [/color][/i][color=#008080]#if SEPARATION[/color]
-[color=#f810b0]020 [/color]    [b][color=#000080]inline[/color][/b] [color=#000000]BigFloat[/color] [b][color=#000080]operator[/color][/b][color=#000000]+=[/color]([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>[/color] [color=#000000]&[/color][color=#000000]other[/color]);
-[i][color=#008800]021 [/color][/i]    [b][color=#000080]inline[/color][/b] [color=#000000]BigFloat[/color] [b][color=#000080]operator[/color][/b][color=#000000]*[/color]([color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]other[/color]);
-[i][color=#008800]022 [/color][/i][color=#008080]#else[/color]
-[i][color=#008800]023 [/color][/i]    [b][color=#000080]inline[/color][/b] [color=#000000]BigFloat[/color] [b][color=#000080]operator[/color][/b] [color=#000000]*[/color] ([color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]bf[/color]);
-[i][color=#008800]024 [/color][/i][color=#008080]#endif[/color]
-[color=#f810b0]025 [/color]    [b][color=#000080]inline[/color][/b] [color=#000000]BigFloat[/color] [b][color=#000080]operator[/color][/b] [color=#000000]=[/color] ([color=#000000]BigFloat[/color] [color=#000000]bf[/color]);
-[i][color=#008800]026 [/color][/i]    [b][color=#000080]friend[/color][/b] [color=#000000]ostream[/color] [color=#000000]&[/color] [b][color=#000080]operator[/color][/b] [color=#000000]<<[/color] ([color=#000000]ostream[/color] [color=#000000]&[/color][color=#000000]output[/color][color=#000000],[/color] [color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]bf[/color]);
-[i][color=#008800]027 [/color][/i][color=#000000]};[/color]
-[i][color=#008800]028 [/color][/i]
-[i][color=#008800]029 [/color][/i][b][color=#000080]int[/color][/b] [color=#000000]main[/color]()
-[color=#f810b0]030 [/color][color=#000000]{[/color]
-[i][color=#008800]031 [/color][/i]    [b][color=#000080]unsigned[/color][/b] [b][color=#000080]int[/color][/b] n; [i][color=#008800]//指数[/color][/i]
-[i][color=#008800]032 [/color][/i]    [color=#000000]string[/color] [color=#000000]baseNum[/color]; [i][color=#008800]//基数[/color][/i]
-[i][color=#008800]033 [/color][/i]
-[i][color=#008800]034 [/color][/i]    [b][color=#000080]while[/color][/b] ([color=#000000]cin[/color] [color=#000000]>>[/color] [color=#000000]baseNum[/color] [color=#000000]>>[/color] n)
-[color=#f810b0]035 [/color]    [color=#000000]{[/color]
-[i][color=#008800]036 [/color][/i]        [color=#000000]vector[/color][color=#000000]<[/color][color=#000000]BigFloat[/color][color=#000000]>[/color] [color=#000000]seqOfBigFloat[/color]; [i][color=#008800]// 构造数列存储 R^1, R^2, R^4, R^8 ~~~ 采用优化的乘法[/color][/i]
-[i][color=#008800]037 [/color][/i]        [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]bool[/color][/b][color=#000000]>[/color] [color=#000000]flag[/color]; [i][color=#008800]// 判断某位置是否需要 seqOfBigFloat 中对应位置的数[/color][/i]
-[i][color=#008800]038 [/color][/i]
-[i][color=#008800]039 [/color][/i]        [color=#000000]seqOfBigFloat[/color][color=#000000].[/color][color=#000000]push_back[/color]([color=#000000]BigFloat[/color]([color=#000000]baseNum[/color]));
-[color=#f810b0]040 [/color]        [b][color=#000080]do[/color][/b]
-[i][color=#008800]041 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]042 [/color][/i]            [color=#000000]flag[/color][color=#000000].[/color][color=#000000]push_back[/color](n [color=#000000]&[/color] [color=#0000ff]1[/color]);
-[i][color=#008800]043 [/color][/i]        [color=#000000]}[/color] [b][color=#000080]while[/color][/b] (n [color=#000000]>>=[/color] [color=#0000ff]1[/color]);
-[i][color=#008800]044 [/color][/i]
-[color=#f810b0]045 [/color]        [i][color=#008800]// 将数列存入 seqOfBigFloat[/color][/i]
-[i][color=#008800]046 [/color][/i]        [b][color=#000080]unsigned[/color][/b] [b][color=#000080]int[/color][/b] [color=#000000]sizeOfFlag[/color] [color=#000000]=[/color] [color=#000000]flag[/color][color=#000000].[/color][color=#000000]size[/color]();
-[i][color=#008800]047 [/color][/i]        [b][color=#000080]for[/color][/b] ([b][color=#000080]unsigned[/color][/b] [color=#000000]i[/color] [color=#000000]=[/color] [color=#0000ff]0[/color]; [color=#000000]i[/color] [color=#000000]<[/color] [color=#000000]sizeOfFlag[/color] [color=#000000]-[/color] [color=#0000ff]1[/color]; [color=#000000]i[/color][color=#000000]++[/color])
-[i][color=#008800]048 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]049 [/color][/i]            [color=#000000]seqOfBigFloat[/color][color=#000000].[/color][color=#000000]push_back[/color]([color=#000000]seqOfBigFloat[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]][/color] [color=#000000]*[/color] [color=#000000]seqOfBigFloat[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]]);[/color]
-[color=#f810b0]050 [/color]        [color=#000000]}[/color]
-[i][color=#008800]051 [/color][/i]
-[i][color=#008800]052 [/color][/i]        [i][color=#008800]// 计算[/color][/i]
-[i][color=#008800]053 [/color][/i]        [color=#000000]BigFloat[/color] [color=#000000]result[/color]([color=#0000ff]"1"[/color]);
-[i][color=#008800]054 [/color][/i]        [b][color=#000080]for[/color][/b] ([b][color=#000080]unsigned[/color][/b] [color=#000000]i[/color] [color=#000000]=[/color] [color=#0000ff]0[/color]; [color=#000000]i[/color] [color=#000000]<[/color] [color=#000000]sizeOfFlag[/color]; [color=#000000]i[/color][color=#000000]++[/color])
-[color=#f810b0]055 [/color]        [color=#000000]{[/color]
-[i][color=#008800]056 [/color][/i]            [b][color=#000080]if[/color][/b] ([color=#000000]flag[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]])[/color]
-[i][color=#008800]057 [/color][/i]            [color=#000000]{[/color]
-[i][color=#008800]058 [/color][/i]                [color=#000000]result[/color] [color=#000000]=[/color] [color=#000000]result[/color] [color=#000000]*[/color] [color=#000000]seqOfBigFloat[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]];[/color]
-[i][color=#008800]059 [/color][/i]            [color=#000000]}[/color]
-[color=#f810b0]060 [/color]        [color=#000000]}[/color]
-[i][color=#008800]061 [/color][/i]
-[i][color=#008800]062 [/color][/i]        [i][color=#008800]// 输出[/color][/i]
-[i][color=#008800]063 [/color][/i]        [color=#000000]cout[/color] [color=#000000]<<[/color] [color=#000000]result[/color] [color=#000000]<<[/color] [color=#000000]endl[/color];
-[i][color=#008800]064 [/color][/i]
-[color=#f810b0]065 [/color]    [color=#000000]}[/color]
-[i][color=#008800]066 [/color][/i]
-[i][color=#008800]067 [/color][/i]    [b][color=#000080]return[/color][/b] [color=#0000ff]0[/color];
-[i][color=#008800]068 [/color][/i][color=#000000]}[/color]
-[i][color=#008800]069 [/color][/i]
-[color=#f810b0]070 [/color][color=#000000]BigFloat[/color][color=#000000]::[/color][color=#000000]BigFloat[/color]([color=#000000]string[/color] [color=#000000]r[/color])
-[i][color=#008800]071 [/color][/i][color=#000000]{[/color]
-[i][color=#008800]072 [/color][/i]    [color=#000000]pos_decimalPoint[/color] [color=#000000]=[/color] [color=#0000ff]0[/color];
-[i][color=#008800]073 [/color][/i]
-[i][color=#008800]074 [/color][/i]    [i][color=#008800]//放入数值，并确定小数点的位置[/color][/i]
-[color=#f810b0]075 [/color]    [b][color=#000080]for[/color][/b] ([b][color=#000080]unsigned[/color][/b] [color=#000000]i[/color] [color=#000000]=[/color] [color=#0000ff]0[/color][color=#000000],[/color] [color=#000000]lengthOfR[/color] [color=#000000]=[/color] [color=#000000]r[/color][color=#000000].[/color][color=#000000]length[/color](); [color=#000000]i[/color] [color=#000000]<[/color] [color=#000000]lengthOfR[/color]; [color=#000000]i[/color][color=#000000]++[/color])
-[i][color=#008800]076 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]077 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]r[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]][/color] [color=#000000]==[/color] [color=#800080]'.'[/color])
-[i][color=#008800]078 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]079 [/color][/i]            [color=#000000]pos_decimalPoint[/color] [color=#000000]=[/color] [color=#000000]lengthOfR[/color] [color=#000000]-[/color] [color=#000000]i[/color] [color=#000000]-[/color] [color=#0000ff]1[/color];
-[color=#f810b0]080 [/color]        [color=#000000]}[/color]
-[i][color=#008800]081 [/color][/i]        [b][color=#000080]else[/color][/b]
-[i][color=#008800]082 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]083 [/color][/i]            [color=#000000]value[/color][color=#000000].[/color][color=#000000]push_back[/color]([color=#000000]r[/color][color=#000000][[/color][color=#000000]i[/color][color=#000000]][/color] [color=#000000]-[/color] [color=#800080]'0'[/color]);
-[i][color=#008800]084 [/color][/i]        [color=#000000]}[/color]
-[color=#f810b0]085 [/color]    [color=#000000]}[/color]
-[i][color=#008800]086 [/color][/i]
-[i][color=#008800]087 [/color][/i]    [i][color=#008800]//去掉 leading 0[/color][/i]
-[i][color=#008800]088 [/color][/i]    [b][color=#000080]for[/color][/b] ([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]iterator[/color] [color=#000000]it[/color] [color=#000000]=[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color](); [color=#000000]it[/color] [color=#000000]!=[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]end[/color](); [color=#000000]++[/color][color=#000000]it[/color])
-[i][color=#008800]089 [/color][/i]    [color=#000000]{[/color]
-[color=#f810b0]090 [/color]        [b][color=#000080]if[/color][/b] ([color=#000000]*[/color][color=#000000]it[/color] [color=#000000]!=[/color] [color=#0000ff]0[/color])
-[i][color=#008800]091 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]092 [/color][/i]            [color=#000000]value[/color][color=#000000].[/color][color=#000000]erase[/color]([color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#000000]it[/color]);
-[i][color=#008800]093 [/color][/i]            [b][color=#000080]break[/color][/b];
-[i][color=#008800]094 [/color][/i]        [color=#000000]}[/color]
-[color=#f810b0]095 [/color]    [color=#000000]}[/color]
-[i][color=#008800]096 [/color][/i]    [i][color=#008800]//去掉 trailing 0[/color][/i]
-[i][color=#008800]097 [/color][/i]    [b][color=#000080]for[/color][/b] ([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]reverse_iterator[/color] [color=#000000]rit[/color] [color=#000000]=[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color](); [color=#000000]rit[/color] [color=#000000]!=[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color](); [color=#000000]++[/color][color=#000000]rit[/color])
-[i][color=#008800]098 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]099 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]*[/color][color=#000000]rit[/color] [color=#000000]!=[/color] [color=#0000ff]0[/color] || [color=#000000]rit[/color] [color=#000000]-[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]() [color=#000000]==[/color] [color=#000000]pos_decimalPoint[/color])
-[color=#f810b0]100 [/color]        [color=#000000]{[/color]
-[i][color=#008800]101 [/color][/i]            [color=#000000]pos_decimalPoint[/color] [color=#000000]-=[/color] [color=#000000]rit[/color] [color=#000000]-[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]();
-[i][color=#008800]102 [/color][/i]            [color=#000000]value[/color][color=#000000].[/color][color=#000000]erase[/color]([color=#000000]rit[/color][color=#000000].[/color][color=#000000]base[/color][color=#000000](),[/color] [color=#000000]value[/color][color=#000000].[/color][color=#000000]end[/color]());
-[i][color=#008800]103 [/color][/i]            [b][color=#000080]break[/color][/b];
-[i][color=#008800]104 [/color][/i]        [color=#000000]}[/color]
-[color=#f810b0]105 [/color]    [color=#000000]}[/color]
-[i][color=#008800]106 [/color][/i][color=#000000]}[/color]
-[i][color=#008800]107 [/color][/i]
-[i][color=#008800]108 [/color][/i][color=#008080]#if SEPARATION[/color]
-[i][color=#008800]109 [/color][/i][i][color=#008800]// adding[/color][/i]
-[color=#f810b0]110 [/color][color=#000000]BigFloat[/color] [color=#000000]BigFloat[/color][color=#000000]::[/color][b][color=#000080]operator[/color][/b][color=#000000]+=[/color]([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>[/color] [color=#000000]&[/color][color=#000000]other[/color])
-[i][color=#008800]111 [/color][/i][color=#000000]{[/color]
-[i][color=#008800]112 [/color][/i]    [b][color=#000080]short[/color][/b] [color=#000000]carry[/color] [color=#000000]=[/color] [color=#0000ff]0[/color]; [i][color=#008800]// 进位数[/color][/i]
-[i][color=#008800]113 [/color][/i]    [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>[/color] [color=#000000]&[/color][color=#000000]result[/color] [color=#000000]=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color];
-[i][color=#008800]114 [/color][/i]    [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]reverse_iterator[/color] [color=#000000]rit_result[/color][color=#000000],[/color]
-[color=#f810b0]115 [/color]        [color=#000000]rit_other[/color];
-[i][color=#008800]116 [/color][/i]
-[i][color=#008800]117 [/color][/i]    [b][color=#000080]for[/color][/b] ([color=#000000]rit_result[/color] [color=#000000]=[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]rbegin[/color][color=#000000](),[/color] [color=#000000]rit_other[/color] [color=#000000]=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]rbegin[/color]();
-[i][color=#008800]118 [/color][/i]        [color=#000000]rit_other[/color] [color=#000000]!=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]119 [/color][/i]        [color=#000000]++[/color][color=#000000]rit_result[/color][color=#000000],[/color] [color=#000000]++[/color][color=#000000]rit_other[/color])
-[color=#f810b0]120 [/color]    [color=#000000]{[/color]
-[i][color=#008800]121 [/color][/i]        [i][color=#008800]// 当 result 中没有空间时，扩展空间[/color][/i]
-[i][color=#008800]122 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]rit_result[/color] [color=#000000]==[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]rend[/color]())
-[i][color=#008800]123 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]124 [/color][/i]            [color=#000000]result[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]result[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#0000ff]0[/color]);
-[color=#f810b0]125 [/color]            [color=#000000]rit_result[/color] [color=#000000]=[/color] [color=#000000]--[/color][color=#000000]result[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]126 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]127 [/color][/i]        [color=#000000]carry[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]rit_result[/color] [color=#000000]+[/color] [color=#000000]*[/color][color=#000000]rit_other[/color] [color=#000000]+[/color] [color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color];
-[i][color=#008800]128 [/color][/i]        [color=#000000]*[/color][color=#000000]rit_result[/color] [color=#000000]=[/color] [color=#000000]carry[/color] [color=#000000]%[/color] [color=#0000ff]10[/color];
-[i][color=#008800]129 [/color][/i]    [color=#000000]}[/color]
-[color=#f810b0]130 [/color]    [i][color=#008800]//结束循环后 other 中所有数都参与了计算[/color][/i]
-[i][color=#008800]131 [/color][/i]    [b][color=#000080]while[/color][/b] ([color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color])
-[i][color=#008800]132 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]133 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]rit_result[/color] [color=#000000]==[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]rend[/color]())
-[i][color=#008800]134 [/color][/i]        [color=#000000]{[/color]
-[color=#f810b0]135 [/color]            [color=#000000]result[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]result[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#0000ff]0[/color]);
-[i][color=#008800]136 [/color][/i]            [color=#000000]rit_result[/color] [color=#000000]=[/color] [color=#000000]--[/color][color=#000000]result[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]137 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]138 [/color][/i]
-[i][color=#008800]139 [/color][/i]        [i][color=#008800]// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它[/color][/i]
-[color=#f810b0]140 [/color]        [color=#000000]carry[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]rit_result[/color] [color=#000000]+[/color] [color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color];
-[i][color=#008800]141 [/color][/i]        [color=#000000]*[/color][color=#000000]rit_result[/color] [color=#000000]=[/color] [color=#000000]carry[/color] [color=#000000]%[/color] [color=#0000ff]10[/color];
-[i][color=#008800]142 [/color][/i]    [color=#000000]}[/color]
-[i][color=#008800]143 [/color][/i]
-[i][color=#008800]144 [/color][/i]    [b][color=#000080]return[/color][/b] [color=#000000]*[/color][b][color=#000080]this[/color][/b];
-[color=#f810b0]145 [/color][color=#000000]}[/color] [i][color=#008800]// end of adding[/color][/i]
-[i][color=#008800]146 [/color][/i]
-[i][color=#008800]147 [/color][/i][i][color=#008800]// multiplication[/color][/i]
-[i][color=#008800]148 [/color][/i][color=#000000]BigFloat[/color] [color=#000000]BigFloat[/color][color=#000000]::[/color][b][color=#000080]operator[/color][/b][color=#000000]*[/color]([color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]other[/color])
-[i][color=#008800]149 [/color][/i][color=#000000]{[/color]
-[color=#f810b0]150 [/color]    [b][color=#000080]int[/color][/b] [color=#000000]num_0[/color] [color=#000000]=[/color] [color=#0000ff]0[/color]; [i][color=#008800]// 在作加法时需要在加数后面添加的 0 的个数[/color][/i]
-[i][color=#008800]151 [/color][/i]    [color=#000000]BigFloat[/color] [color=#000000]result[/color]; [i][color=#008800]// 保存结果[/color][/i]
-[i][color=#008800]152 [/color][/i]
-[i][color=#008800]153 [/color][/i]    [b][color=#000080]for[/color][/b] ([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]reverse_iterator[/color] [color=#000000]rit_this[/color] [color=#000000]=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]();
-[i][color=#008800]154 [/color][/i]        [color=#000000]rit_this[/color] [color=#000000]!=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[color=#f810b0]155 [/color]        [color=#000000]++[/color][color=#000000]rit_this[/color][color=#000000],[/color]
-[i][color=#008800]156 [/color][/i]        [color=#000000]++[/color][color=#000000]num_0[/color]) [i][color=#008800]// 乘数每乘完一位后增加0的个数[/color][/i]
-[i][color=#008800]157 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]158 [/color][/i]        [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>[/color] [color=#000000]addend[/color]([color=#000000]num_0[/color][color=#000000],[/color] [color=#0000ff]0[/color]); [i][color=#008800]// 初始化加数，并添加一定个数的 0[/color][/i]
-[i][color=#008800]159 [/color][/i]        [b][color=#000080]unsigned[/color][/b] [color=#000000]carry[/color] [color=#000000]=[/color] [color=#0000ff]0[/color]; [i][color=#008800]// 进位数[/color][/i]
-[color=#f810b0]160 [/color]
-[i][color=#008800]161 [/color][/i]        [b][color=#000080]for[/color][/b] ([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]reverse_iterator[/color] [color=#000000]rit_other[/color] [color=#000000]=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]();
-[i][color=#008800]162 [/color][/i]            [color=#000000]rit_other[/color] [color=#000000]!=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]163 [/color][/i]            [color=#000000]++[/color][color=#000000]rit_other[/color])
-[i][color=#008800]164 [/color][/i]        [color=#000000]{[/color]
-[color=#f810b0]165 [/color]            [color=#000000]carry[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]rit_this[/color] [color=#000000]*[/color] [color=#000000]*[/color][color=#000000]rit_other[/color] [color=#000000]+[/color] [color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color]; [i][color=#008800]// 计[/color][/i]
-[i][color=#008800]166 [/color][/i]            [color=#000000]addend[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]addend[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#000000]carry[/color] [color=#000000]%[/color] [color=#0000ff]10[/color]);   [i][color=#008800]// 算[/color][/i]
-[i][color=#008800]167 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]168 [/color][/i]        [i][color=#008800]// 处理留下的 carry[/color][/i]
-[i][color=#008800]169 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color])
-[color=#f810b0]170 [/color]        [color=#000000]{[/color]
-[i][color=#008800]171 [/color][/i]            [color=#000000]addend[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]addend[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#000000]carry[/color] [color=#000000]/[/color] [color=#0000ff]10[/color]);
-[i][color=#008800]172 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]173 [/color][/i]
-[i][color=#008800]174 [/color][/i]        [color=#000000]result[/color] [color=#000000]+=[/color] [color=#000000]addend[/color]; [i][color=#008800]// 将计算所得的加数与结果相加[/color][/i]
-[color=#f810b0]175 [/color]    [color=#000000]}[/color]
-[i][color=#008800]176 [/color][/i]
-[i][color=#008800]177 [/color][/i]    [color=#000000]result[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]+[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color]; [i][color=#008800]// 计算小数点[/color][/i]
-[i][color=#008800]178 [/color][/i]
-[i][color=#008800]179 [/color][/i]    [b][color=#000080]return[/color][/b] [color=#000000]result[/color];
-[color=#f810b0]180 [/color][color=#000000]}[/color] [i][color=#008800]// end of multiplication[/color][/i]
-[i][color=#008800]181 [/color][/i]
-[i][color=#008800]182 [/color][/i][color=#008080]#else[/color]
-[i][color=#008800]183 [/color][/i]
-[i][color=#008800]184 [/color][/i][color=#000000]BigFloat[/color] [color=#000000]BigFloat[/color][color=#000000]::[/color][b][color=#000080]operator[/color][/b] [color=#000000]*[/color] ([color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]other[/color])
-[color=#f810b0]185 [/color][color=#000000]{[/color]
-[i][color=#008800]186 [/color][/i]    [color=#000000]BigFloat[/color] [color=#000000]result[/color];
-[i][color=#008800]187 [/color][/i]    [b][color=#000080]int[/color][/b] [color=#000000]i[/color][color=#000000],[/color] [color=#000000]j[/color];
-[i][color=#008800]188 [/color][/i]    [b][color=#000080]short[/color][/b] [color=#000000]carrySum[/color][color=#000000],[/color] [i][color=#008800]// 和的进位数[/color][/i]
-[i][color=#008800]189 [/color][/i]        [color=#000000]carryPro[/color]; [i][color=#008800]// 积的进位数[/color][/i]
-[color=#f810b0]190 [/color]
-[i][color=#008800]191 [/color][/i]    [color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]reverse_iterator[/color] [color=#000000]ritSelf[/color][color=#000000],[/color]
-[i][color=#008800]192 [/color][/i]                                    [color=#000000]ritOther[/color][color=#000000],[/color]
-[i][color=#008800]193 [/color][/i]                                    [color=#000000]ritResult[/color];
-[i][color=#008800]194 [/color][/i]
-[color=#f810b0]195 [/color]    [b][color=#000080]for[/color][/b] ([color=#000000]ritSelf[/color] [color=#000000]=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color][color=#000000](),[/color] [color=#000000]j[/color] [color=#000000]=[/color] [color=#0000ff]0[/color];
-[i][color=#008800]196 [/color][/i]        [color=#000000]ritSelf[/color] [color=#000000]!=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]197 [/color][/i]        [color=#000000]++[/color][color=#000000]ritSelf[/color][color=#000000],[/color] [color=#000000]j[/color][color=#000000]++[/color])
-[i][color=#008800]198 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]199 [/color][/i]        [color=#000000]carrySum[/color] [color=#000000]=[/color] [color=#000000]carryPro[/color] [color=#000000]=[/color] [color=#0000ff]0[/color];
-[color=#f810b0]200 [/color]        [b][color=#000080]for[/color][/b] ([color=#000000]ritOther[/color] [color=#000000]=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color][color=#000000](),[/color] [color=#000000]i[/color] [color=#000000]=[/color] [color=#000000]j[/color];
-[i][color=#008800]201 [/color][/i]            [color=#000000]ritOther[/color] [color=#000000]!=[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]();
-[i][color=#008800]202 [/color][/i]            [color=#000000]++[/color][color=#000000]ritOther[/color][color=#000000],[/color] [color=#000000]i[/color][color=#000000]++[/color])
-[i][color=#008800]203 [/color][/i]        [color=#000000]{[/color]
-[i][color=#008800]204 [/color][/i]            [color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]() [color=#000000]+[/color] [color=#000000]i[/color];
-[color=#f810b0]205 [/color]            [b][color=#000080]if[/color][/b] ([color=#000000]ritResult[/color] [color=#000000]==[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]())
-[i][color=#008800]206 [/color][/i]            [color=#000000]{[/color]
-[i][color=#008800]207 [/color][/i]                [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#0000ff]0[/color]);
-[i][color=#008800]208 [/color][/i]                [color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]() [color=#000000]-[/color] [color=#0000ff]1[/color];
-[i][color=#008800]209 [/color][/i]            [color=#000000]}[/color]
-[color=#f810b0]210 [/color]            [color=#000000]carryPro[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]ritSelf[/color] [color=#000000]*[/color] [color=#000000]*[/color][color=#000000]ritOther[/color] [color=#000000]+[/color] [color=#000000]carryPro[/color] [color=#000000]/[/color] [color=#0000ff]10[/color];
-[i][color=#008800]211 [/color][/i]            [color=#000000]carrySum[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]ritResult[/color] [color=#000000]+[/color] [color=#000000]carryPro[/color] [color=#000000]%[/color] [color=#0000ff]10[/color] [color=#000000]+[/color] [color=#000000]carrySum[/color] [color=#000000]/[/color] [color=#0000ff]10[/color];
-[i][color=#008800]212 [/color][/i]            [color=#000000]*[/color][color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]carrySum[/color] [color=#000000]%[/color] [color=#0000ff]10[/color];
-[i][color=#008800]213 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]214 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]carrySum[/color] [color=#000000]/[/color] [color=#0000ff]10[/color] || [color=#000000]carryPro[/color] [color=#000000]/[/color] [color=#0000ff]10[/color])
-[color=#f810b0]215 [/color]        [color=#000000]{[/color]
-[i][color=#008800]216 [/color][/i]            [b][color=#000080]do[/color][/b] 
-[i][color=#008800]217 [/color][/i]            [color=#000000]{[/color]
-[i][color=#008800]218 [/color][/i]                [color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rbegin[/color]() [color=#000000]+[/color] [color=#000000]i[/color];
-[i][color=#008800]219 [/color][/i]                [b][color=#000080]if[/color][/b] ([color=#000000]ritResult[/color] [color=#000000]==[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]())
-[color=#f810b0]220 [/color]                [color=#000000]{[/color]
-[i][color=#008800]221 [/color][/i]                    [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#0000ff]0[/color]);
-[i][color=#008800]222 [/color][/i]                    [color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]result[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]rend[/color]() [color=#000000]-[/color] [color=#0000ff]1[/color];
-[i][color=#008800]223 [/color][/i]                [color=#000000]}[/color]
-[i][color=#008800]224 [/color][/i]                [color=#000000]carrySum[/color] [color=#000000]=[/color] [color=#000000]*[/color][color=#000000]ritResult[/color] [color=#000000]+[/color] [color=#000000]carrySum[/color] [color=#000000]/[/color] [color=#0000ff]10[/color] [color=#000000]+[/color] [color=#000000]carryPro[/color] [color=#000000]/[/color] [color=#0000ff]10[/color];
-[color=#f810b0]225 [/color]                [color=#000000]*[/color][color=#000000]ritResult[/color] [color=#000000]=[/color] [color=#000000]carrySum[/color] [color=#000000]%[/color] [color=#0000ff]10[/color];
-[i][color=#008800]226 [/color][/i]                [color=#000000]carryPro[/color] [color=#000000]=[/color] [color=#0000ff]0[/color];
-[i][color=#008800]227 [/color][/i]                [color=#000000]i[/color][color=#000000]++[/color];
-[i][color=#008800]228 [/color][/i]            [color=#000000]}[/color] [b][color=#000080]while[/color][/b] ([color=#000000]carrySum[/color] [color=#000000]/[/color] [color=#0000ff]10[/color]);
-[i][color=#008800]229 [/color][/i]        [color=#000000]}[/color]
-[color=#f810b0]230 [/color]    [color=#000000]}[/color]
-[i][color=#008800]231 [/color][/i]
-[i][color=#008800]232 [/color][/i]    [color=#000000]result[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]=[/color] [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]+[/color] [color=#000000]other[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color];
-[i][color=#008800]233 [/color][/i]
-[i][color=#008800]234 [/color][/i]    [b][color=#000080]return[/color][/b] [color=#000000]result[/color];
-[color=#f810b0]235 [/color][color=#000000]}[/color]
-[i][color=#008800]236 [/color][/i][color=#008080]#endif[/color]
-[i][color=#008800]237 [/color][/i]
-[i][color=#008800]238 [/color][/i][color=#000000]BigFloat[/color] [color=#000000]BigFloat[/color][color=#000000]::[/color][b][color=#000080]operator[/color][/b] [color=#000000]=[/color] ([color=#000000]BigFloat[/color] [color=#000000]bf[/color])
-[i][color=#008800]239 [/color][/i][color=#000000]{[/color]
-[color=#f810b0]240 [/color]    [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]value[/color] [color=#000000]=[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color];
-[i][color=#008800]241 [/color][/i]    [b][color=#000080]this[/color][/b][color=#000000]->[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]=[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color];
-[i][color=#008800]242 [/color][/i]    [b][color=#000080]return[/color][/b] [color=#000000]*[/color][b][color=#000080]this[/color][/b];
-[i][color=#008800]243 [/color][/i][color=#000000]}[/color]
-[i][color=#008800]244 [/color][/i]
-[color=#f810b0]245 [/color][color=#000000]ostream[/color] [color=#000000]&[/color] [b][color=#000080]operator[/color][/b] [color=#000000]<<[/color] ([color=#000000]ostream[/color] [color=#000000]&[/color][color=#000000]output[/color][color=#000000],[/color] [color=#000000]BigFloat[/color] [color=#000000]&[/color][color=#000000]bf[/color])
-[i][color=#008800]246 [/color][/i][color=#000000]{[/color]
-[i][color=#008800]247 [/color][/i]    [b][color=#000080]if[/color][/b] ([color=#000000]bf[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]>[/color] [color=#0000ff]0[/color])
-[i][color=#008800]248 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]249 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]bf[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]>[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]size[/color]())
-[color=#f810b0]250 [/color]        [color=#000000]{[/color]
-[i][color=#008800]251 [/color][/i]            [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color][color=#000000](),[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color] [color=#000000]-[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]size[/color][color=#000000](),[/color] [color=#0000ff]0[/color]);
-[i][color=#008800]252 [/color][/i]        [color=#000000]}[/color]
-[i][color=#008800]253 [/color][/i]        [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]insert[/color]([color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]end[/color]() [color=#000000]-[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]pos_decimalPoint[/color][color=#000000],[/color] [color=#800080]'.'[/color]);
-[i][color=#008800]254 [/color][/i]    [color=#000000]}[/color]
-[color=#f810b0]255 [/color]
-[i][color=#008800]256 [/color][/i]    [i][color=#008800]/*[/color][/i]
-[i][color=#008800]257 [/color][/i][i][color=#008800]    for_each(bf.value.begin(), bf.value.end(),[/color][/i]
-[i][color=#008800]258 [/color][/i][i][color=#008800]        [&](short v)[/color][/i]
-[i][color=#008800]259 [/color][/i][i][color=#008800]        {[/color][/i]
-[color=#f810b0]260 [/color][i][color=#008800]            if (v == '.')[/color][/i]
-[i][color=#008800]261 [/color][/i][i][color=#008800]                output << '.';[/color][/i]
-[i][color=#008800]262 [/color][/i][i][color=#008800]            else[/color][/i]
-[i][color=#008800]263 [/color][/i][i][color=#008800]                output << v;[/color][/i]
-[i][color=#008800]264 [/color][/i][i][color=#008800]        }[/color][/i]
-[color=#f810b0]265 [/color][i][color=#008800]    );*/[/color][/i]
-[i][color=#008800]266 [/color][/i]    
-[i][color=#008800]267 [/color][/i]    [b][color=#000080]for[/color][/b] ([color=#000000]vector[/color][color=#000000]<[/color][b][color=#000080]short[/color][/b][color=#000000]>::[/color][color=#000000]iterator[/color] [color=#000000]it[/color] [color=#000000]=[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]begin[/color](); [color=#000000]it[/color] [color=#000000]!=[/color] [color=#000000]bf[/color][color=#000000].[/color][color=#000000]value[/color][color=#000000].[/color][color=#000000]end[/color](); [color=#000000]++[/color][color=#000000]it[/color])
-[i][color=#008800]268 [/color][/i]    [color=#000000]{[/color]
-[i][color=#008800]269 [/color][/i]        [b][color=#000080]if[/color][/b] ([color=#000000]*[/color][color=#000000]it[/color] [color=#000000]==[/color] [color=#800080]'.'[/color])
-[color=#f810b0]270 [/color]            [color=#000000]output[/color] [color=#000000]<<[/color] [color=#800080]'.'[/color];
-[i][color=#008800]271 [/color][/i]        [b][color=#000080]else[/color][/b]
-[i][color=#008800]272 [/color][/i]            [color=#000000]output[/color] [color=#000000]<<[/color] [color=#000000]*[/color][color=#000000]it[/color];
-[i][color=#008800]273 [/color][/i]    [color=#000000]}[/color]
-[i][color=#008800]274 [/color][/i]    
-[color=#f810b0]275 [/color]    [b][color=#000080]return[/color][/b] [color=#000000]output[/color];
-[i][color=#008800]276 [/color][/i][color=#000000]}[/color]
-[/font]
+	#include <iostream>
+	#include <vector>
+	#include <string>
+	#include <algorithm>
+	using namespace std;
+
+	#define SEPARATION 1
+
+	class BigFloat
+	{
+	private:
+		vector<short> value; //数字部分
+		unsigned int pos_decimalPoint; //小数点位置
+
+	public:
+		BigFloat() : pos_decimalPoint(0) {};
+		inline BigFloat(string r); // 初始化 result, 小数点位置为 输入的 R 所在的下标， 无小数点则为 0
+
+	#if SEPARATION
+		inline BigFloat operator+=(vector<short> &other);
+		inline BigFloat operator*(BigFloat &other);
+	#else
+		inline BigFloat operator * (BigFloat &bf);
+	#endif
+		inline BigFloat operator = (BigFloat bf);
+		friend ostream & operator << (ostream &output, BigFloat &bf);
+	};
+
+	int main()
+	{
+		unsigned int n; //指数
+		string baseNum; //基数
+
+		while (cin >> baseNum >> n)
+		{
+			vector<BigFloat> seqOfBigFloat; // 构造数列存储 R^1, R^2, R^4, R^8 ~~~ 采用优化的乘法
+			vector<bool> flag; // 判断某位置是否需要 seqOfBigFloat 中对应位置的数
+
+			seqOfBigFloat.push_back(BigFloat(baseNum));
+			do
+			{
+				flag.push_back(n & 1);
+			} while (n >>= 1);
+
+			// 将数列存入 seqOfBigFloat
+			unsigned int sizeOfFlag = flag.size();
+			for (unsigned i = 0; i < sizeOfFlag - 1; i++)
+			{
+				seqOfBigFloat.push_back(seqOfBigFloat[i] * seqOfBigFloat[i]);
+			}
+
+			// 计算
+			BigFloat result("1");
+			for (unsigned i = 0; i < sizeOfFlag; i++)
+			{
+				if (flag[i])
+				{
+					result = result * seqOfBigFloat[i];
+				}
+			}
+
+			// 输出
+			cout << result << endl;
+
+		}
+
+		return 0;
+	}
+
+	BigFloat::BigFloat(string r)
+	{
+		pos_decimalPoint = 0;
+
+		//放入数值，并确定小数点的位置
+		for (unsigned i = 0, lengthOfR = r.length(); i < lengthOfR; i++)
+		{
+			if (r[i] == '.')
+			{
+				pos_decimalPoint = lengthOfR - i - 1;
+			}
+			else
+			{
+				value.push_back(r[i] - '0');
+			}
+		}
+
+		//去掉 leading 0
+		for (vector<short>::iterator it = value.begin(); it != value.end(); ++it)
+		{
+			if (*it != 0)
+			{
+				value.erase(value.begin(), it);
+				break;
+			}
+		}
+		//去掉 trailing 0
+		for (vector<short>::reverse_iterator rit = value.rbegin(); rit != value.rend(); ++rit)
+		{
+			if (*rit != 0 || rit - value.rbegin() == pos_decimalPoint)
+			{
+				pos_decimalPoint -= rit - value.rbegin();
+				value.erase(rit.base(), value.end());
+				break;
+			}
+		}
+	}
+
+	#if SEPARATION
+	// adding
+	BigFloat BigFloat::operator+=(vector<short> &other)
+	{
+		short carry = 0; // 进位数
+		vector<short> &result = this->value;
+		vector<short>::reverse_iterator rit_result,
+			rit_other;
+
+		for (rit_result = result.rbegin(), rit_other = other.rbegin();
+			rit_other != other.rend();
+			++rit_result, ++rit_other)
+		{
+			// 当 result 中没有空间时，扩展空间
+			if (rit_result == result.rend())
+			{
+				result.insert(result.begin(), 0);
+				rit_result = --result.rend();
+			}
+			carry = *rit_result + *rit_other + carry / 10;
+			*rit_result = carry % 10;
+		}
+		//结束循环后 other 中所有数都参与了计算
+		while (carry / 10)
+		{
+			if (rit_result == result.rend())
+			{
+				result.insert(result.begin(), 0);
+				rit_result = --result.rend();
+			}
+
+			// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
+			carry = *rit_result + carry / 10;
+			*rit_result = carry % 10;
+		}
+
+		return *this;
+	} // end of adding
+
+	// multiplication
+	BigFloat BigFloat::operator*(BigFloat &other)
+	{
+		int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
+		BigFloat result; // 保存结果
+
+		for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
+			rit_this != this->value.rend();
+			++rit_this,
+			++num_0) // 乘数每乘完一位后增加0的个数
+		{
+			vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
+			unsigned carry = 0; // 进位数
+
+			for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
+				rit_other != other.value.rend();
+				++rit_other)
+			{
+				carry = *rit_this * *rit_other + carry / 10; // 计
+				addend.insert(addend.begin(), carry % 10);   // 算
+			}
+			// 处理留下的 carry
+			if (carry / 10)
+			{
+				addend.insert(addend.begin(), carry / 10);
+			}
+
+			result += addend; // 将计算所得的加数与结果相加
+		}
+
+		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+
+		return result;
+	} // end of multiplication
+
+	#else
+
+	BigFloat BigFloat::operator * (BigFloat &other)
+	{
+		BigFloat result;
+		int i, j;
+		short carrySum, // 和的进位数
+			carryPro; // 积的进位数
+
+		vector<short>::reverse_iterator ritSelf,
+										ritOther,
+										ritResult;
+
+		for (ritSelf = this->value.rbegin(), j = 0;
+			ritSelf != this->value.rend();
+			++ritSelf, j++)
+		{
+			carrySum = carryPro = 0;
+			for (ritOther = other.value.rbegin(), i = j;
+				ritOther != other.value.rend();
+				++ritOther, i++)
+			{
+				ritResult = result.value.rbegin() + i;
+				if (ritResult == result.value.rend())
+				{
+					result.value.insert(result.value.begin(), 0);
+					ritResult = result.value.rend() - 1;
+				}
+				carryPro = *ritSelf * *ritOther + carryPro / 10;
+				carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+				*ritResult = carrySum % 10;
+			}
+			if (carrySum / 10 || carryPro / 10)
+			{
+				do 
+				{
+					ritResult = result.value.rbegin() + i;
+					if (ritResult == result.value.rend())
+					{
+						result.value.insert(result.value.begin(), 0);
+						ritResult = result.value.rend() - 1;
+					}
+					carrySum = *ritResult + carrySum / 10 + carryPro / 10;
+					*ritResult = carrySum % 10;
+					carryPro = 0;
+					i++;
+				} while (carrySum / 10);
+			}
+		}
+
+		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
+
+		return result;
+	}
+	#endif
+
+	BigFloat BigFloat::operator = (BigFloat bf)
+	{
+		this->value = bf.value;
+		this->pos_decimalPoint = bf.pos_decimalPoint;
+		return *this;
+	}
+
+	ostream & operator << (ostream &output, BigFloat &bf)
+	{
+		if (bf.pos_decimalPoint > 0)
+		{
+			if (bf.pos_decimalPoint > bf.value.size())
+			{
+				bf.value.insert(bf.value.begin(), bf.pos_decimalPoint - bf.value.size(), 0);
+			}
+			bf.value.insert(bf.value.end() - bf.pos_decimalPoint, '.');
+		}
+
+		/*
+		for_each(bf.value.begin(), bf.value.end(),
+			[&](short v)
+			{
+				if (v == '.')
+					output << '.';
+				else
+					output << v;
+			}
+		);*/
+		
+		for (vector<short>::iterator it = bf.value.begin(); it != bf.value.end(); ++it)
+		{
+			if (*it == '.')
+				output << '.';
+			else
+				output << *it;
+		}
+		
+		return output;
+	}
+
 
 
 ##最后的思考与总结
