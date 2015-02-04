@@ -11,14 +11,14 @@ redcarpet:
 # 参考 http://github.com/vmg/redcarpet/blob/master/README.markdown
 
 # 核心设置
-title : GustFu's blog
+title : Buugun's blog
 tagline: Site Tagline
-keywords : gustfu, algorithm, c++
+keywords : Buugun, algorithm, c++
 description: a blog to share and note my idea
 author :
-  name : GustFu
+  name : Buugun
   email : fu0110@live.com
-  github : gustfu
+  github : Buugun
   gitcafe : 
   twitter :
   facebook :
@@ -26,7 +26,7 @@ author :
   weibo : 
 
 # 域名连接
-#production_url : //ihavee.github.io
+#production_url : //buugun.github.io
 
 # Jekyll Bootstrap
 JB :
@@ -57,7 +57,7 @@ JB :
       width: 580
       colorscheme: light
     duoshuo :
-      name : gustfu              # 多说上获取的 shortname
+      name : Buugun              # 多说上获取的 shortname
       rcomments :                   # 首页侧边栏最新评论
         num: 10                     # 最新评论显示条数
         avatar : 1                   # 最新评论是否显示头像
