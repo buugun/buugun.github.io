@@ -112,7 +112,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 ![method of separation](/assets/images/poj1001/method_of_separation.png)
 
 	代码：
-
+```cpp
 	// adding
 	BigFloat BigFloat::operator+=(vector<short> &other)
 	{
@@ -185,6 +185,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 		return result;
 	} // end of multiplication
+```
 
 ##乘加结合的乘法运算
 	思路图：
@@ -192,7 +193,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 ![method of combination](/assets/images/poj1001/method_of_combination.png)
 
 	代码:
-
+```cpp
 	BigFloat BigFloat::operator * (BigFloat &other)
 	{
 		BigFloat result;
@@ -245,9 +246,10 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 		return result;
 	}
+```
 
 ##完整代码
-
+```cpp
 	#include <iostream>
 	#include <vector>
 	#include <string>
@@ -524,7 +526,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 		
 		return output;
 	}
-
+```
 
 
 ##最后的思考与总结
