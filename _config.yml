@@ -13,7 +13,7 @@ redcarpet:
 # 核心设置
 title : Buugun's blog
 tagline: Site Tagline
-keywords : Buugun, algorithm, c++
+keywords : Buugun, algorithm, c++, cocos2d-x
 description: a blog to share and note my idea
 author :
   name : Buugun
@@ -23,7 +23,7 @@ author :
   twitter :
   facebook :
   feedburner :
-  weibo : 
+  weibo : Buugun
 
 # 域名连接
 #production_url : //buugun.github.io
