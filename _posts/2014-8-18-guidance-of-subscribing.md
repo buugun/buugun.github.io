@@ -2,7 +2,7 @@
 layout: post
 title: "Guidance of Subcribing by QQ email"
 description: "Guidance of Subcribing by QQ email"
-keywords: "订阅博客 subscribe a blog"
+keywords: "订阅博客"
 category: Other
 tags: [订阅博客, subscribe a blog]
 ---
