@@ -113,78 +113,78 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	代码：
 ```cpp
-	// adding
-	BigFloat BigFloat::operator+=(vector<short> &other)
+// adding
+BigFloat BigFloat::operator+=(vector<short> &other)
+{
+	short carry = 0; // 进位数
+	vector<short> &result = this->value;
+	vector<short>::reverse_iterator rit_result,
+		rit_other;
+
+	for (rit_result = result.rbegin(), rit_other = other.rbegin();
+		rit_other != other.rend();
+		++rit_result, ++rit_other)
 	{
-		short carry = 0; // 进位数
-		vector<short> &result = this->value;
-		vector<short>::reverse_iterator rit_result,
-			rit_other;
-
-		for (rit_result = result.rbegin(), rit_other = other.rbegin();
-			rit_other != other.rend();
-			++rit_result, ++rit_other)
+		// 当 result 中没有空间时，扩展空间
+		if (rit_result == result.rend())
 		{
-			// 当 result 中没有空间时，扩展空间
-			if (rit_result == result.rend())
-			{
-				result.insert(result.begin(), 0);
-				rit_result = --result.rend();
-			}
-			carry = *rit_result + *rit_other + carry / 10;
-			*rit_result = carry % 10;
+			result.insert(result.begin(), 0);
+			rit_result = --result.rend();
 		}
-		//结束循环后 other 中所有数都参与了计算
-		while (carry / 10)
-		{
-			if (rit_result == result.rend())
-			{
-				result.insert(result.begin(), 0);
-				rit_result = --result.rend();
-			}
-
-			// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
-			carry = *rit_result + carry / 10;
-			*rit_result = carry % 10;
-		}
-
-		return *this;
-	} // end of adding
-
-	// multiplication
-	BigFloat BigFloat::operator*(BigFloat &other)
+		carry = *rit_result + *rit_other + carry / 10;
+		*rit_result = carry % 10;
+	}
+	//结束循环后 other 中所有数都参与了计算
+	while (carry / 10)
 	{
-		int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
-		BigFloat result; // 保存结果
-
-		for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
-			rit_this != this->value.rend();
-			++rit_this,
-			++num_0) // 乘数每乘完一位后增加0的个数
+		if (rit_result == result.rend())
 		{
-			vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
-			unsigned carry = 0; // 进位数
-
-			for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
-				rit_other != other.value.rend();
-				++rit_other)
-			{
-				carry = *rit_this * *rit_other + carry / 10; // 计
-				addend.insert(addend.begin(), carry % 10);   // 算
-			}
-			// 处理留下的 carry
-			if (carry / 10)
-			{
-				addend.insert(addend.begin(), carry / 10);
-			}
-
-			result += addend; // 将计算所得的加数与结果相加
+			result.insert(result.begin(), 0);
+			rit_result = --result.rend();
 		}
 
-		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+		// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
+		carry = *rit_result + carry / 10;
+		*rit_result = carry % 10;
+	}
 
-		return result;
-	} // end of multiplication
+	return *this;
+} // end of adding
+
+// multiplication
+BigFloat BigFloat::operator*(BigFloat &other)
+{
+	int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
+	BigFloat result; // 保存结果
+
+	for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
+		rit_this != this->value.rend();
+		++rit_this,
+		++num_0) // 乘数每乘完一位后增加0的个数
+	{
+		vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
+		unsigned carry = 0; // 进位数
+
+		for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
+			rit_other != other.value.rend();
+			++rit_other)
+		{
+			carry = *rit_this * *rit_other + carry / 10; // 计
+			addend.insert(addend.begin(), carry % 10);   // 算
+		}
+		// 处理留下的 carry
+		if (carry / 10)
+		{
+			addend.insert(addend.begin(), carry / 10);
+		}
+
+		result += addend; // 将计算所得的加数与结果相加
+	}
+
+	result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+
+	return result;
+} // end of multiplication
 ```
 
 ##乘加结合的乘法运算
@@ -194,25 +194,39 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 
 	代码:
 ```cpp
-	BigFloat BigFloat::operator * (BigFloat &other)
+BigFloat BigFloat::operator * (BigFloat &other)
+{
+	BigFloat result;
+	int i, j;
+	short carrySum, // 和的进位数
+		carryPro; // 积的进位数
+
+	vector<short>::reverse_iterator ritSelf,
+									ritOther,
+									ritResult;
+
+	for (ritSelf = this->value.rbegin(), j = 0;
+		ritSelf != this->value.rend();
+		++ritSelf, j++)
 	{
-		BigFloat result;
-		int i, j;
-		short carrySum, // 和的进位数
-			carryPro; // 积的进位数
-
-		vector<short>::reverse_iterator ritSelf,
-										ritOther,
-										ritResult;
-
-		for (ritSelf = this->value.rbegin(), j = 0;
-			ritSelf != this->value.rend();
-			++ritSelf, j++)
+		carrySum = carryPro = 0;
+		for (ritOther = other.value.rbegin(), i = j;
+			ritOther != other.value.rend();
+			++ritOther, i++)
 		{
-			carrySum = carryPro = 0;
-			for (ritOther = other.value.rbegin(), i = j;
-				ritOther != other.value.rend();
-				++ritOther, i++)
+			ritResult = result.value.rbegin() + i;
+			if (ritResult == result.value.rend())
+			{
+				result.value.insert(result.value.begin(), 0);
+				ritResult = result.value.rend() - 1;
+			}
+			carryPro = *ritSelf * *ritOther + carryPro / 10;
+			carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+			*ritResult = carrySum % 10;
+		}
+		if (carrySum / 10 || carryPro / 10)
+		{
+			do 
 			{
 				ritResult = result.value.rbegin() + i;
 				if (ritResult == result.value.rend())
@@ -220,238 +234,238 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 					result.value.insert(result.value.begin(), 0);
 					ritResult = result.value.rend() - 1;
 				}
-				carryPro = *ritSelf * *ritOther + carryPro / 10;
-				carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+				carrySum = *ritResult + carrySum / 10 + carryPro / 10;
 				*ritResult = carrySum % 10;
-			}
-			if (carrySum / 10 || carryPro / 10)
-			{
-				do 
-				{
-					ritResult = result.value.rbegin() + i;
-					if (ritResult == result.value.rend())
-					{
-						result.value.insert(result.value.begin(), 0);
-						ritResult = result.value.rend() - 1;
-					}
-					carrySum = *ritResult + carrySum / 10 + carryPro / 10;
-					*ritResult = carrySum % 10;
-					carryPro = 0;
-					i++;
-				} while (carrySum / 10);
-			}
+				carryPro = 0;
+				i++;
+			} while (carrySum / 10);
 		}
-
-		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
-
-		return result;
 	}
+
+	result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
+
+	return result;
+}
 ```
 
 ##完整代码
 ```cpp
-	#include <iostream>
-	#include <vector>
-	#include <string>
-	#include <algorithm>
-	using namespace std;
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
 
-	#define SEPARATION 1
+#define SEPARATION 1
 
-	class BigFloat
+class BigFloat
+{
+private:
+	vector<short> value; //数字部分
+	unsigned int pos_decimalPoint; //小数点位置
+
+public:
+	BigFloat() : pos_decimalPoint(0) {};
+	inline BigFloat(string r); // 初始化 result, 小数点位置为 输入的 R 所在的下标， 无小数点则为 0
+
+#if SEPARATION
+	inline BigFloat operator+=(vector<short> &other);
+	inline BigFloat operator*(BigFloat &other);
+#else
+	inline BigFloat operator * (BigFloat &bf);
+#endif
+	inline BigFloat operator = (BigFloat bf);
+	friend ostream & operator << (ostream &output, BigFloat &bf);
+};
+
+int main()
+{
+	unsigned int n; //指数
+	string baseNum; //基数
+
+	while (cin >> baseNum >> n)
 	{
-	private:
-		vector<short> value; //数字部分
-		unsigned int pos_decimalPoint; //小数点位置
+		vector<BigFloat> seqOfBigFloat; // 构造数列存储 R^1, R^2, R^4, R^8 ~~~ 采用优化的乘法
+		vector<bool> flag; // 判断某位置是否需要 seqOfBigFloat 中对应位置的数
 
-	public:
-		BigFloat() : pos_decimalPoint(0) {};
-		inline BigFloat(string r); // 初始化 result, 小数点位置为 输入的 R 所在的下标， 无小数点则为 0
-
-	#if SEPARATION
-		inline BigFloat operator+=(vector<short> &other);
-		inline BigFloat operator*(BigFloat &other);
-	#else
-		inline BigFloat operator * (BigFloat &bf);
-	#endif
-		inline BigFloat operator = (BigFloat bf);
-		friend ostream & operator << (ostream &output, BigFloat &bf);
-	};
-
-	int main()
-	{
-		unsigned int n; //指数
-		string baseNum; //基数
-
-		while (cin >> baseNum >> n)
+		seqOfBigFloat.push_back(BigFloat(baseNum));
+		do
 		{
-			vector<BigFloat> seqOfBigFloat; // 构造数列存储 R^1, R^2, R^4, R^8 ~~~ 采用优化的乘法
-			vector<bool> flag; // 判断某位置是否需要 seqOfBigFloat 中对应位置的数
+			flag.push_back(n & 1);
+		} while (n >>= 1);
 
-			seqOfBigFloat.push_back(BigFloat(baseNum));
-			do
-			{
-				flag.push_back(n & 1);
-			} while (n >>= 1);
-
-			// 将数列存入 seqOfBigFloat
-			unsigned int sizeOfFlag = flag.size();
-			for (unsigned i = 0; i < sizeOfFlag - 1; i++)
-			{
-				seqOfBigFloat.push_back(seqOfBigFloat[i] * seqOfBigFloat[i]);
-			}
-
-			// 计算
-			BigFloat result("1");
-			for (unsigned i = 0; i < sizeOfFlag; i++)
-			{
-				if (flag[i])
-				{
-					result = result * seqOfBigFloat[i];
-				}
-			}
-
-			// 输出
-			cout << result << endl;
-
+		// 将数列存入 seqOfBigFloat
+		unsigned int sizeOfFlag = flag.size();
+		for (unsigned i = 0; i < sizeOfFlag - 1; i++)
+		{
+			seqOfBigFloat.push_back(seqOfBigFloat[i] * seqOfBigFloat[i]);
 		}
 
-		return 0;
+		// 计算
+		BigFloat result("1");
+		for (unsigned i = 0; i < sizeOfFlag; i++)
+		{
+			if (flag[i])
+			{
+				result = result * seqOfBigFloat[i];
+			}
+		}
+
+		// 输出
+		cout << result << endl;
+
 	}
 
-	BigFloat::BigFloat(string r)
+	return 0;
+}
+
+BigFloat::BigFloat(string r)
+{
+	pos_decimalPoint = 0;
+
+	//放入数值，并确定小数点的位置
+	for (unsigned i = 0, lengthOfR = r.length(); i < lengthOfR; i++)
 	{
-		pos_decimalPoint = 0;
-
-		//放入数值，并确定小数点的位置
-		for (unsigned i = 0, lengthOfR = r.length(); i < lengthOfR; i++)
+		if (r[i] == '.')
 		{
-			if (r[i] == '.')
-			{
-				pos_decimalPoint = lengthOfR - i - 1;
-			}
-			else
-			{
-				value.push_back(r[i] - '0');
-			}
+			pos_decimalPoint = lengthOfR - i - 1;
 		}
-
-		//去掉 leading 0
-		for (vector<short>::iterator it = value.begin(); it != value.end(); ++it)
+		else
 		{
-			if (*it != 0)
-			{
-				value.erase(value.begin(), it);
-				break;
-			}
-		}
-		//去掉 trailing 0
-		for (vector<short>::reverse_iterator rit = value.rbegin(); rit != value.rend(); ++rit)
-		{
-			if (*rit != 0 || rit - value.rbegin() == pos_decimalPoint)
-			{
-				pos_decimalPoint -= rit - value.rbegin();
-				value.erase(rit.base(), value.end());
-				break;
-			}
+			value.push_back(r[i] - '0');
 		}
 	}
 
-	#if SEPARATION
-	// adding
-	BigFloat BigFloat::operator+=(vector<short> &other)
+	//去掉 leading 0
+	for (vector<short>::iterator it = value.begin(); it != value.end(); ++it)
 	{
-		short carry = 0; // 进位数
-		vector<short> &result = this->value;
-		vector<short>::reverse_iterator rit_result,
-			rit_other;
-
-		for (rit_result = result.rbegin(), rit_other = other.rbegin();
-			rit_other != other.rend();
-			++rit_result, ++rit_other)
+		if (*it != 0)
 		{
-			// 当 result 中没有空间时，扩展空间
-			if (rit_result == result.rend())
-			{
-				result.insert(result.begin(), 0);
-				rit_result = --result.rend();
-			}
-			carry = *rit_result + *rit_other + carry / 10;
-			*rit_result = carry % 10;
+			value.erase(value.begin(), it);
+			break;
 		}
-		//结束循环后 other 中所有数都参与了计算
-		while (carry / 10)
-		{
-			if (rit_result == result.rend())
-			{
-				result.insert(result.begin(), 0);
-				rit_result = --result.rend();
-			}
-
-			// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
-			carry = *rit_result + carry / 10;
-			*rit_result = carry % 10;
-		}
-
-		return *this;
-	} // end of adding
-
-	// multiplication
-	BigFloat BigFloat::operator*(BigFloat &other)
+	}
+	//去掉 trailing 0
+	for (vector<short>::reverse_iterator rit = value.rbegin(); rit != value.rend(); ++rit)
 	{
-		int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
-		BigFloat result; // 保存结果
-
-		for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
-			rit_this != this->value.rend();
-			++rit_this,
-			++num_0) // 乘数每乘完一位后增加0的个数
+		if (*rit != 0 || rit - value.rbegin() == pos_decimalPoint)
 		{
-			vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
-			unsigned carry = 0; // 进位数
+			pos_decimalPoint -= rit - value.rbegin();
+			value.erase(rit.base(), value.end());
+			break;
+		}
+	}
+}
 
-			for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
-				rit_other != other.value.rend();
-				++rit_other)
-			{
-				carry = *rit_this * *rit_other + carry / 10; // 计
-				addend.insert(addend.begin(), carry % 10);   // 算
-			}
-			// 处理留下的 carry
-			if (carry / 10)
-			{
-				addend.insert(addend.begin(), carry / 10);
-			}
+#if SEPARATION
+// adding
+BigFloat BigFloat::operator+=(vector<short> &other)
+{
+	short carry = 0; // 进位数
+	vector<short> &result = this->value;
+	vector<short>::reverse_iterator rit_result,
+		rit_other;
 
-			result += addend; // 将计算所得的加数与结果相加
+	for (rit_result = result.rbegin(), rit_other = other.rbegin();
+		rit_other != other.rend();
+		++rit_result, ++rit_other)
+	{
+		// 当 result 中没有空间时，扩展空间
+		if (rit_result == result.rend())
+		{
+			result.insert(result.begin(), 0);
+			rit_result = --result.rend();
+		}
+		carry = *rit_result + *rit_other + carry / 10;
+		*rit_result = carry % 10;
+	}
+	//结束循环后 other 中所有数都参与了计算
+	while (carry / 10)
+	{
+		if (rit_result == result.rend())
+		{
+			result.insert(result.begin(), 0);
+			rit_result = --result.rend();
 		}
 
-		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+		// 这里由于能够保证 other 中所有数值都参与了计算，所以不考虑它
+		carry = *rit_result + carry / 10;
+		*rit_result = carry % 10;
+	}
 
-		return result;
-	} // end of multiplication
+	return *this;
+} // end of adding
 
-	#else
+// multiplication
+BigFloat BigFloat::operator*(BigFloat &other)
+{
+	int num_0 = 0; // 在作加法时需要在加数后面添加的 0 的个数
+	BigFloat result; // 保存结果
 
-	BigFloat BigFloat::operator * (BigFloat &other)
+	for (vector<short>::reverse_iterator rit_this = this->value.rbegin();
+		rit_this != this->value.rend();
+		++rit_this,
+		++num_0) // 乘数每乘完一位后增加0的个数
 	{
-		BigFloat result;
-		int i, j;
-		short carrySum, // 和的进位数
-			carryPro; // 积的进位数
+		vector<short> addend(num_0, 0); // 初始化加数，并添加一定个数的 0
+		unsigned carry = 0; // 进位数
 
-		vector<short>::reverse_iterator ritSelf,
-										ritOther,
-										ritResult;
-
-		for (ritSelf = this->value.rbegin(), j = 0;
-			ritSelf != this->value.rend();
-			++ritSelf, j++)
+		for (vector<short>::reverse_iterator rit_other = other.value.rbegin();
+			rit_other != other.value.rend();
+			++rit_other)
 		{
-			carrySum = carryPro = 0;
-			for (ritOther = other.value.rbegin(), i = j;
-				ritOther != other.value.rend();
-				++ritOther, i++)
+			carry = *rit_this * *rit_other + carry / 10; // 计
+			addend.insert(addend.begin(), carry % 10);   // 算
+		}
+		// 处理留下的 carry
+		if (carry / 10)
+		{
+			addend.insert(addend.begin(), carry / 10);
+		}
+
+		result += addend; // 将计算所得的加数与结果相加
+	}
+
+	result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint; // 计算小数点
+
+	return result;
+} // end of multiplication
+
+#else
+
+BigFloat BigFloat::operator * (BigFloat &other)
+{
+	BigFloat result;
+	int i, j;
+	short carrySum, // 和的进位数
+		carryPro; // 积的进位数
+
+	vector<short>::reverse_iterator ritSelf,
+									ritOther,
+									ritResult;
+
+	for (ritSelf = this->value.rbegin(), j = 0;
+		ritSelf != this->value.rend();
+		++ritSelf, j++)
+	{
+		carrySum = carryPro = 0;
+		for (ritOther = other.value.rbegin(), i = j;
+			ritOther != other.value.rend();
+			++ritOther, i++)
+		{
+			ritResult = result.value.rbegin() + i;
+			if (ritResult == result.value.rend())
+			{
+				result.value.insert(result.value.begin(), 0);
+				ritResult = result.value.rend() - 1;
+			}
+			carryPro = *ritSelf * *ritOther + carryPro / 10;
+			carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+			*ritResult = carrySum % 10;
+		}
+		if (carrySum / 10 || carryPro / 10)
+		{
+			do 
 			{
 				ritResult = result.value.rbegin() + i;
 				if (ritResult == result.value.rend())
@@ -459,73 +473,59 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 					result.value.insert(result.value.begin(), 0);
 					ritResult = result.value.rend() - 1;
 				}
-				carryPro = *ritSelf * *ritOther + carryPro / 10;
-				carrySum = *ritResult + carryPro % 10 + carrySum / 10;
+				carrySum = *ritResult + carrySum / 10 + carryPro / 10;
 				*ritResult = carrySum % 10;
-			}
-			if (carrySum / 10 || carryPro / 10)
-			{
-				do 
-				{
-					ritResult = result.value.rbegin() + i;
-					if (ritResult == result.value.rend())
-					{
-						result.value.insert(result.value.begin(), 0);
-						ritResult = result.value.rend() - 1;
-					}
-					carrySum = *ritResult + carrySum / 10 + carryPro / 10;
-					*ritResult = carrySum % 10;
-					carryPro = 0;
-					i++;
-				} while (carrySum / 10);
-			}
+				carryPro = 0;
+				i++;
+			} while (carrySum / 10);
 		}
-
-		result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
-
-		return result;
-	}
-	#endif
-
-	BigFloat BigFloat::operator = (BigFloat bf)
-	{
-		this->value = bf.value;
-		this->pos_decimalPoint = bf.pos_decimalPoint;
-		return *this;
 	}
 
-	ostream & operator << (ostream &output, BigFloat &bf)
-	{
-		if (bf.pos_decimalPoint > 0)
-		{
-			if (bf.pos_decimalPoint > bf.value.size())
-			{
-				bf.value.insert(bf.value.begin(), bf.pos_decimalPoint - bf.value.size(), 0);
-			}
-			bf.value.insert(bf.value.end() - bf.pos_decimalPoint, '.');
-		}
+	result.pos_decimalPoint = this->pos_decimalPoint + other.pos_decimalPoint;
 
-		/*
-		for_each(bf.value.begin(), bf.value.end(),
-			[&](short v)
-			{
-				if (v == '.')
-					output << '.';
-				else
-					output << v;
-			}
-		);*/
-		
-		for (vector<short>::iterator it = bf.value.begin(); it != bf.value.end(); ++it)
+	return result;
+}
+#endif
+
+BigFloat BigFloat::operator = (BigFloat bf)
+{
+	this->value = bf.value;
+	this->pos_decimalPoint = bf.pos_decimalPoint;
+	return *this;
+}
+
+ostream & operator << (ostream &output, BigFloat &bf)
+{
+	if (bf.pos_decimalPoint > 0)
+	{
+		if (bf.pos_decimalPoint > bf.value.size())
 		{
-			if (*it == '.')
+			bf.value.insert(bf.value.begin(), bf.pos_decimalPoint - bf.value.size(), 0);
+		}
+		bf.value.insert(bf.value.end() - bf.pos_decimalPoint, '.');
+	}
+
+	/*
+	for_each(bf.value.begin(), bf.value.end(),
+		[&](short v)
+		{
+			if (v == '.')
 				output << '.';
 			else
-				output << *it;
+				output << v;
 		}
-		
-		return output;
+	);*/
+	
+	for (vector<short>::iterator it = bf.value.begin(); it != bf.value.end(); ++it)
+	{
+		if (*it == '.')
+			output << '.';
+		else
+			output << *it;
 	}
+	
+	return output;
+}
 ```
 
 
