@@ -23,11 +23,10 @@ Cocos默认生成的Android.mk文件需要自己手动添加需要编译的cpp�
 
 ###使用方法：
 将原Android.mk中的
-`
-LOCAL_SRC_FILES := hellocpp/main.cpp \
-                   ../../Classes/AppDelegate.cpp \
-                   ../../Classes/HelloWorldScene.cpp
-`
+
+	LOCAL_SRC_FILES := hellocpp/main.cpp \
+	                   ../../Classes/AppDelegate.cpp \
+	                   ../../Classes/HelloWorldScene.cpp
 
 替换为
 
