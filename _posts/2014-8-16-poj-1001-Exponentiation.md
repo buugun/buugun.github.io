@@ -112,7 +112,7 @@ Link of this problem: [POJ 1001 Exponentiation](http://poj.org/problem?id=1001)
 ![method of separation](/assets/images/poj1001/method_of_separation.png)
 
 	代码：
-```cpp
+`
 // adding
 BigFloat BigFloat::operator+=(vector<short> &other)
 {
@@ -185,7 +185,7 @@ BigFloat BigFloat::operator*(BigFloat &other)
 
 	return result;
 } // end of multiplication
-```
+`
 
 ##乘加结合的乘法运算
 	思路图：
