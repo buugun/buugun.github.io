@@ -29,7 +29,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/HelloWorldScene.cpp
 `
 替换为
-`
+```
 #auto
 #traverse all the directory and subdirectory  
 define walk  
@@ -46,4 +46,4 @@ FILE_LIST += $(filter %.c, $(ALLFILES))
 #source file will be compiled  
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 #end auto
-`
+```
