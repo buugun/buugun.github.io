@@ -30,6 +30,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 `
 
 替换为
+
 	#auto
 	#traverse all the directory and subdirectory  
 	define walk  
