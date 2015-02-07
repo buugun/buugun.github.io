@@ -19,7 +19,7 @@ Cocos默认生成的Android.mk文件需要自己手动添加需要编译的cpp�
 
 感谢这位朋友
 
-====
+---
 
 ###使用方法：
 将原Android.mk中的
@@ -30,21 +30,19 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 `
 
 替换为
-```
-#auto
-#traverse all the directory and subdirectory  
-define walk  
-  $(wildcard $(1)) $(foreach e, $(wildcard $(1)/*), $(call walk, $(e)))  
-endef  
-   
-#traverse Classes Directory  
-ALLFILES = $(call walk, $(LOCAL_PATH)/../../Classes)  
-   
-FILE_LIST := hellocpp/main.cpp  
-FILE_LIST += $(filter %.cpp, $(ALLFILES))  
-FILE_LIST += $(filter %.c, $(ALLFILES))  
-   
-#source file will be compiled  
-LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
-#end auto
-```
+	#auto
+	#traverse all the directory and subdirectory  
+	define walk  
+	  $(wildcard $(1)) $(foreach e, $(wildcard $(1)/*), $(call walk, $(e)))  
+	endef  
+	   
+	#traverse Classes Directory  
+	ALLFILES = $(call walk, $(LOCAL_PATH)/../../Classes)  
+	   
+	FILE_LIST := hellocpp/main.cpp  
+	FILE_LIST += $(filter %.cpp, $(ALLFILES))  
+	FILE_LIST += $(filter %.c, $(ALLFILES))  
+	   
+	#source file will be compiled  
+	LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
+	#end auto
