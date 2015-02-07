@@ -13,6 +13,8 @@ Cocos默认生成的Android.mk文件需要自己手动添加需要编译的cpp�
 
 所以这里记一下Android.mk里自动添加cpp或c文件的方法。
 
+<!-- more -->
+
 参考自：[http://blog.csdn.net/qqmcy/article/details/39551979](http://blog.csdn.net/qqmcy/article/details/39551979)
 
 感谢这位朋友
