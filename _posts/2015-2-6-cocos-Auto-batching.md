@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "cocos-Auto-batching"
+title: "Cocos-Auto-batching"
 description: "介绍了3.0版本中处理大批量精灵的绘制的新机制——Auto-batching"
 keywords: "cocos, auto batching"
-category: cocos
-tags: [cocos2d-x, auto batching]
+category: Cocos
+tags: [Cocos, auto batching]
 ---
 
 {% include JB/setup %}
