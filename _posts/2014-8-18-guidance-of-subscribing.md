@@ -3,7 +3,7 @@ layout: post
 title: "Guidance of Subcribing by QQ email"
 description: "Guidance of Subcribing by QQ email"
 keywords: "订阅博客"
-category: Other
+category: 小技巧
 tags: [订阅博客, subscribe a blog]
 ---
 
