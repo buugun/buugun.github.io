@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "cocos2d-x-3.x-Auto-batching"
+title: "cocos-Auto-batching"
 description: "介绍了3.0版本中处理大批量精灵的绘制的新机制——Auto-batching"
-keywords: "cocos2d-x、auto batching"
-category: cocos2d-x
+keywords: "cocos, auto batching"
+category: cocos
 tags: [cocos2d-x, auto batching]
 ---
 
