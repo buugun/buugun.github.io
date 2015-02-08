@@ -47,7 +47,7 @@ scheduler(SEL_SCHEDULE selector, float interval, unsigned int repeat, float dela
 #####关闭方法：
 
 ```cpp
-unschedule(SEL_SCHEDULE selector, float delay)。
+unschedule(SEL_SCHEDULE selector, float delay);
 ```
 
 ###3.单次调度器(schedulerOnce)
